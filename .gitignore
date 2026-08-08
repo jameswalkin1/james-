@@ -1,0 +1,21 @@
+# Secrets — the MCP servers in .mcp.json read their keys from the environment,
+# so nothing here should ever be committed.
+.env
+.env.*
+!.env.example
+.envrc
+.direnv/
+*.pem
+*.key
+
+# Local Claude Code state
+.claude/settings.local.json
+
+# Editor / OS cruft
+.DS_Store
+.vscode/
+.idea/
+
+# Node, in case anything gets installed locally
+node_modules/
+npm-debug.log*
