@@ -6,6 +6,13 @@
       "headers": {
         "x-api-key": "${TWENTY_FIRST_API_KEY}"
       }
+    },
+    "firecrawl": {
+      "type": "http",
+      "url": "https://mcp.firecrawl.dev/v2/mcp",
+      "headers": {
+        "Authorization": "Bearer ${FIRECRAWL_API_KEY}"
+      }
     }
   }
 }
