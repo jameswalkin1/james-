@@ -140,3 +140,80 @@ custom domain → then spend on traffic. Note that Meta routinely rejects hair-l
 advertising that uses before/after imagery or implies regrowth, and the store is
 already published to the Facebook & Instagram channel. Keep ad creative as hedged
 as the product copy or you lose the ad account rather than just the budget.
+
+---
+
+# Round 2 — homepage, header and one-product restructure
+
+Triggered by a screenshot of the live preview. Two things were visible there that
+the API had not shown.
+
+## What the screenshot revealed
+
+**1. The header was set to transparent on the homepage, with white text.**
+`enable_transparent_header_home: true` plus `text_color_transparent_home` set to
+the background colour meant the logo, hamburger, account and cart icons were
+white-on-white over the hero image. That is why the menu was effectively
+invisible. Set to `false` for home, product and collection, text switched to the
+foreground colour, and a 1px bottom border added so the header reads as a header.
+
+**2. The product images are supplier marketing banners, not product photos.**
+The hero image is a poster that already contains its own headline
+("HEALTHIER HAIR / A BRIGHTER YOU"), a benefit icon row, and the line
+"INVEST IN A HEALTHIER YOU". The homepage headline was being overlaid directly on
+top of that, producing two competing sets of text in the same space, in giant
+uppercase, half of it unreadable.
+
+This is worse than a layout bug:
+
+- **The banners carry claims the copy deliberately avoids.** They say
+  "SUPPORTS NATURAL GROWTH" and "Red Light Therapy **Hair Growth** Cap". The
+  product copy was rewritten specifically to stop asserting growth. The images
+  now contradict the text on the same page.
+- **Meta rejects this category of creative** for hair-loss advertising. Since the
+  store is published to the Facebook & Instagram channel, these images are what
+  would be pulled into ads.
+- Every other store selling this cap is using the same banners.
+
+The shot list in `shopify/photo-shot-list.md` has now gone from "highest-value
+improvement" to **the blocking item**. Until there are real photographs, the site
+is arguing with itself.
+
+## Homepage rebuilt as a one-product store
+
+The `hero` section and the `product-list` grid are both gone. A collection grid
+showing exactly one product is not a shop, and the hero could not be salvaged
+while the only available image is a poster with baked-in text.
+
+New structure:
+
+1. **`featured-product`** — product image on the left, title, price and swatches
+   on the right, clicking through to the product page. For a single-product store
+   this is the hero: the product is the message, and nothing is overlaid on
+   anything.
+2. **"Most light therapy devices end up in a drawer"** — text band on the second
+   brand colour.
+3. **"Straight talk before you buy"** — new text band covering the honest framing,
+   delivery times and the returns window, so the three things most likely to cause
+   a refund are stated before the click, not after.
+
+## Navigation
+
+The main menu contained two links to anchors that do not exist on the homepage
+(`/#how-it-works` and `/#wavelengths`). They scrolled nowhere. Both menus are now:
+The cap · FAQ · Shipping · Returns · About · Contact.
+
+## Footer
+
+Still carried Savor's food-theme demo copy — the email signup read
+"We send tasty emails" — plus three menu columns where two pointed at menus that
+did not exist, and five social links pointing at `facebook.com`, `instagram.com`,
+`youtube.com`, `tiktok.com` and `x.com` — the platforms' own homepages, not any
+HaloScalp profile. Dead social icons read as a scam site more than as no icons at
+all, so they are removed. Add them back when there are real accounts to link.
+
+## Still on the duplicate theme
+
+Everything above is on **"Savor — HaloScalp copy (review before publishing)"**,
+still unpublished. Preview it and publish when you are happy. The live theme is
+untouched and still shows the food copy.
