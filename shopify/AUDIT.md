@@ -343,3 +343,67 @@ The homepage now has **no `<h1>`**, because the request was for image, price and
 two buttons only. That costs some SEO — Google has no headline to read on the
 store's most important page. A single line above the price would fix it without
 adding clutter.
+
+---
+
+# Round 6 — visual redesign
+
+Brief: livelier, more inviting, less text, some motion. Four decisions taken with
+the user beforehand: **warm premium** palette, **confident but tasteful** motion,
+honesty copy **cut from the homepage**, and design **around** the supplier images
+rather than leaning on them.
+
+## Palette (store-wide)
+
+| Token | Was | Now |
+|---|---|---|
+| background | `#ffffff` | `#FBF8F3` warm paper |
+| foreground | `#000000` | `#22201C` soft charcoal |
+| color1 | `#a42325` red | `#22201C` charcoal — primary buttons |
+| color2 | `#e8d5c7` | `#EFE4D6` warm sand |
+| color3 | `#E6E6E6` grey | `#E2D6C6` warm line |
+
+Pure black on pure white is most of what made it feel cold and cheap. Buttons are
+now pill-shaped, sentence case rather than uppercase, with a visible border on
+secondaries. Gold `#B08D57` is used only as a micro-accent on eyebrows and step
+numbers — never as a fill, which is what makes gold look cheap.
+
+## Homepage rebuilt as one designed section
+
+The theme's block system kept producing serviceable-but-flat layouts, so the
+homepage is now a single `custom-liquid` section with hand-written HTML and CSS.
+Full design control; the trade-off is that it is edited as code rather than by
+dragging blocks in the theme editor.
+
+Four sections, roughly 60 words of body copy total:
+
+1. **Hero** — eyebrow, two-line headline, price, two buttons, one micro line of
+   reassurance. A slow red radial glow pulses behind it (7s), which is the product
+   rendered as atmosphere rather than as another banner.
+2. **Number strip** — 100 / 3 / 0 / 30 with one-word labels, staggered in.
+3. **Three steps** — Charge, Wear, Carry on. One line each, cards lift on hover.
+4. **Closing band** — charcoal, one line, repeated CTA with the price.
+
+The price and product URL are read live from Liquid, so nothing goes stale.
+
+## Motion
+
+Scroll reveal via `IntersectionObserver` (fade plus 18px rise, staggered), the
+hero glow pulse, button lift on hover and focus, card lift on the steps.
+Everything is wrapped in `prefers-reduced-motion: reduce`, and elements are
+revealed unconditionally if the observer is unavailable — so nothing can end up
+permanently invisible.
+
+## Product page
+
+Same treatment, lighter touch: gallery frames get a warm border and rounded
+corners, images after the first fade in on scroll, buy buttons lift on hover.
+The first image is never hidden, so the page is never blank on load.
+
+## Note on the honesty copy
+
+Removed from the homepage as requested. It still appears in full on the product
+page and on How it works, so the compliance position is unchanged — but the
+homepage no longer leads with the caveat. Worth knowing that was the most
+distinctive thing on the page, and it can go back as one line if the new version
+feels too much like everyone else's.
