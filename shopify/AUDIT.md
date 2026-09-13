@@ -217,3 +217,58 @@ all, so they are removed. Add them back when there are real accounts to link.
 Everything above is on **"Savor — HaloScalp copy (review before publishing)"**,
 still unpublished. Preview it and publish when you are happy. The live theme is
 untouched and still shows the food copy.
+
+---
+
+# Round 3 — image cropping and typography
+
+From a second screenshot of the product page in preview.
+
+## The cropping
+
+The product gallery was set to **square (`aspect_ratio: "1"`) with `media_fit: "cover"`**.
+The images are tall infographics. Forcing a tall image into a square with `cover`
+crops the top and bottom off — which is why "CONCENTRATED LIGHT THERAPY" was cut
+in half.
+
+Changed to `aspect_ratio: "adapt"` so each image renders at its own proportions,
+`media_fit: "contain"`, and `media_columns` from two to one, because these are
+things to be *read*, not decorative shots to be tiled. Nothing is cropped now.
+
+## Typography
+
+The theme had every heading level forced to **uppercase**, with h2 at **48px**.
+On a 60-character product title that produced a wall of capitals. Set h1–h4 to
+sentence case, h2 to 36px, and kept h5/h6 uppercase for small labels where it
+still works. Body text raised from 14px to 16px — 14px is small for an audience
+that skews older.
+
+## Product page order
+
+The add-to-cart button sat *below* the full description, so on mobile you had to
+scroll through roughly 500 words before you could buy. Reordered to
+title → price → variant → buy → description.
+
+Also removed the **reviews block** (it renders an empty star rating on a store
+with no reviews, which reads worse than no stars at all) and the **related
+products section** (it has nothing to recommend on a one-product store).
+
+## A contradiction in the infographics — needs your supplier
+
+The specification banner is now legible, and it says:
+
+> 100 PIECES — Red light 660nm
+> 200 PIECES — Near red light 850nm
+
+That is **300 LEDs**. The product title, variant and all the copy say **100**.
+One of the two is wrong, and both are currently on the same page.
+
+Either the title is undercounting by a factor of three, or the banner belongs to
+a different model in the supplier's range. Get this confirmed before running any
+traffic — "300 LEDs" is a materially better selling point than 100 if it is true,
+and a false advertising problem if it is not.
+
+The same banner gives the wavelengths as **660nm and 850nm**, which are the
+standard pairing. The `halo.wavelengths` metafield is still deliberately empty:
+given the LED count on the same image is in dispute, the wavelengths from it are
+not yet trustworthy enough to publish as a spec.
