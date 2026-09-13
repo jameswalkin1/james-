@@ -232,6 +232,154 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "accordion_sections": {
+              "type": "accordion",
+              "name": "t:names.accordion",
+              "settings": {
+                "icon": "plus",
+                "dividers": true,
+                "divider_color": "",
+                "type_preset": "h6",
+                "background_color": "",
+                "text_color": "",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 8,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "row_box": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "What&rsquo;s in the box",
+                    "open_by_default": true,
+                    "icon": "box",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text-1": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<ul><li>HaloScalp LED cap &times; 1</li><li>Charging cable &times; 1</li><li>User manual &times; 1</li></ul><p>Nothing else to buy, nothing to assemble.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text-1"
+                  ]
+                },
+                "row_use": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "How to use it",
+                    "open_by_default": false,
+                    "icon": "stopwatch",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text-1": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Put it on, choose one of the three intensity levels, and wear it while you get on with something else. Start low and build up as your scalp gets used to it.</p><p>A few sessions a week that you actually keep up will do more than an intensive fortnight followed by a drawer. Recommended timings are in the manual in the box.</p><p><a href=\"/pages/how-it-works\">Read the full routine</a></p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text-1"
+                  ]
+                },
+                "row_delivery": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "Delivery &amp; returns",
+                    "open_by_default": false,
+                    "icon": "truck",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text-1": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Dispatched within 1&ndash;2 business days. After that, roughly 7&ndash;14 business days to Ireland and the UK, and 10&ndash;20 business days further afield.</p><p><strong>Free standard delivery within Ireland.</strong> You have a 14-day legal right to cancel and a 30-day return window on top of it. If it arrives faulty, we cover the return postage.</p><p><a href=\"/pages/shipping\">Shipping detail</a> &middot; <a href=\"/pages/returns\">Returns policy</a></p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text-1"
+                  ]
+                }
+              },
+              "block_order": [
+                "row_box",
+                "row_use",
+                "row_delivery"
+              ]
             }
           },
           "block_order": [
@@ -239,6 +387,7 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "accordion_sections",
             "text_gXMUag"
           ]
         }

@@ -407,3 +407,75 @@ page and on How it works, so the compliance position is unchanged — but the
 homepage no longer leads with the caveat. Worth knowing that was the most
 distinctive thing on the page, and it can go back as one line if the new version
 feels too much like everyone else's.
+
+---
+
+# Round 7 — white/red palette, accordion product page
+
+Three asks: different colours, stop over-using the cordless angle, and put the
+product page content behind click-to-open sections. Colours and section
+behaviour were chosen by the user beforehand.
+
+## Palette — white with one red
+
+| Token | Was (warm premium) | Now |
+|---|---|---|
+| background | `#FBF8F3` | `#FFFFFF` |
+| foreground | `#22201C` | `#111111` |
+| color1 | `#22201C` charcoal | `#D92D20` red |
+| color2 | `#EFE4D6` | `#F7F7F6` |
+| color3 | `#E2D6C6` | `#E5E5E3` |
+
+Red is now the only colour on the site and it does all the work: primary buttons,
+the number strip, step numbers, the eyebrow, the hero glow. Everything else is
+black, white and grey. Corners went from pills to an 8px radius, which reads less
+consumer-app and more device brand.
+
+## Product page — accordion sections
+
+Built with the theme's native `accordion` block and three `_accordion-row`
+children, so they stay editable in the theme editor rather than being hand-rolled
+HTML:
+
+1. **What's in the box** (box icon, open by default)
+2. **How to use it** (stopwatch icon)
+3. **Delivery & returns** (truck icon)
+
+They sit directly below the buy button, expand in place with a + toggle, and
+multiple can be open at once. Rows get a larger tap target, a red hover state, and
+their content slides in over 320ms.
+
+The product description was cut to match — "How to use", "In the box" and
+"Delivery & returns" are gone from it, since they are now the accordion rows. What
+remains is the lead, why-a-cap, the spec list, straight talk on results, and
+safety.
+
+**Note on the safety section:** it was not one of the chosen accordion rows, so
+rather than delete it, it stays in the product description body. Dropping the
+"not a medical device" language entirely would have been a compliance regression.
+
+## Cordless, dialled back
+
+It had crept into the eyebrow, a strip stat, a step, a whole FAQ question and
+three lines of description. Now one mention per surface:
+
+- Homepage eyebrow → "Red + near-infrared light therapy"; the "0 cables" stat
+  became "2 wavelengths"; step 01 keeps a single passing reference
+- FAQ → the standalone "Is it cordless?" question is gone
+- Product description → one clause in the opening paragraph
+
+## The images changed under us
+
+Mid-round, six new images appeared on the product, replacing most of the old
+supplier banners. They are all **1122 × 1402**, a ratio of exactly 0.80 — which
+is precisely the `1/1.25` gallery frame already configured. They fit with no
+letterboxing at all.
+
+The original featured image is still 1145 × 1374 (0.833), so it is the one odd
+one out and will show a hairline of white at top and bottom. Re-exporting that one
+at 1122 × 1402 would make the gallery perfectly uniform, and the `contain`
+override in `gallery_fit_css` could then be removed entirely.
+
+All six new images had empty alt text; generic but accurate alt text is set. It
+still cannot describe what each shot actually shows, because `cdn.shopify.com`
+remains blocked from this session.
