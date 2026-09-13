@@ -1,4 +1,9 @@
-# Homepage copy — paste into Online Store → Themes → Savor → Customize
+# Homepage copy
+
+> **Status:** this copy is already applied to the duplicated theme
+> **"Savor — HaloScalp copy (review before publishing)"**. Preview and publish it
+> rather than retyping any of this. The text below is kept as the reference, and
+> for the sections at the bottom that still need building by hand.
 
 The live theme still contains **Savor demo copy written for a food brand**. Anyone
 landing on haloscalp today reads "A Family Tradition of Bold, Fresh Flavor" on a
@@ -14,7 +19,7 @@ hair-loss store. Fix this before spending a cent on ads.
 > level, get on with your morning. No helmet, no sitting still, no rearranging
 > your evening.
 
-**Button label:** `Shop HaloScalp — €69.99`
+**Button label:** `Shop HaloScalp — €79.99`
 **Button link:** the product page (not `/collections/all`, you only sell one thing)
 
 ## 2. Middle section (currently: "A Family Tradition of Bold, Fresh Flavor")

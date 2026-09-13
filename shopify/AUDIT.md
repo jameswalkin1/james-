@@ -1,95 +1,142 @@
 # HaloScalp store audit — 13 Sep 2026
 
 Store: `zj9dzm-vc.myshopify.com` · Basic plan · EUR · Ireland
-Catalogue: 1 product · Orders to date: **0**
+Catalogue: 1 product · Orders to date: **0** · Storefront: live, no password
 
 ---
 
-## Fixed already (live on the store)
+## Done — live on the store now
 
-| # | Was | Now |
-|---|-----|-----|
-| 1 | Title `LED Red Light Therapy Hair Growth Cap with Infrared Heat` | `HaloScalp Red Light Therapy Cap — 100 LEDs, Dual-Band + Infrared` |
-| 2 | Description = raw supplier copy, 6 images hotlinked from `oss.teemdrop.com` | Rewritten: benefit-led, brand voice, no supplier assets |
-| 3 | SEO title + description both `null` | Both written, keyword-targeted |
-| 4 | No tags, product type `Cap` | 7 tags, type `Scalp Care Device` |
-| 5 | Option `color` = `100Leds Cap DualBand PlugIn` | Option `Model` = `100 LED Dual-Band` |
-| 6 | FAQ described a **cap insert** with **4 modes** | Rewritten to match the actual product |
-| 7 | Returns page said "Halo Scalp cap insert" | Corrected to "HaloScalp cap" |
+### Product
+- **Title** → `HaloScalp Red Light Therapy Cap — 100 LEDs, Dual-Band + Infrared`
+  (was `LED Red Light Therapy Hair Growth Cap with Infrared Heat`)
+- **Description** rewritten from raw supplier copy. Leads on cordless use, states
+  delivery honestly, includes a "straight talk on results" section and safety notes.
+- **Six supplier-hotlinked images removed** from the description body. They were
+  served from `oss.teemdrop.com` — the supplier could delete them and break the
+  page, and they identify the store as dropshipping.
+- **Price** → €79.99 (was €69.99)
+- **SEO title and description** written (both were `null`)
+- **Tags** (7) and product type `Scalp Care Device` added
+- **Variant option** → `Model: 100 LED Dual-Band` (was `color: 100Leds Cap DualBand PlugIn`)
+- **Alt text** on all 8 images (all were empty)
+- **Metafields** set: `descriptors.subtitle` (the theme reads this on product
+  cards and it was rendering blank), `halo.card_spec`, `halo.lede`
 
-Handle left unchanged deliberately, so no URL breaks or redirects.
+### Pages
+- **FAQ** — rewrote to match the product actually being sold, added "Is it
+  cordless?" and "Do you ship to my country?"
+- **Shipping information** — rewrote for all 28 destinations with real rates and
+  per-region delivery estimates
+- **Returns & refunds** — corrected the product name
+- **Contact** — was completely empty; now has copy above the form
+- **About HaloScalp** — new page, didn't exist
 
----
-
-## The three things that were actually going to cost you money
-
-### 1. Your pages described a different product from the one you sell
-The FAQ and returns pages (written 13 Aug) describe a **flexible insert that sits
-inside a cap you already own**, with **four modes**. The product you listed today
-is a **full cap** with **three gear settings**. A customer reading your FAQ and
-then opening the box gets something else. That is a chargeback, not a return —
-"item not as described" is one of the few disputes you lose automatically.
-
-Fixed. But it shows the real risk: the pages were written for a product you no
-longer sell, and nothing flagged it.
-
-### 2. The supplier copy contradicted itself
-The description claimed a **"built-in rechargeable battery for cordless use"**
-while the variant you sell is literally named **"PlugIn"**. It also advertised
-**"48, 56, 100 or 108 LED configurations"** when you stock exactly one.
-
-I wrote the new copy to say "power cable" and avoid claiming cordless —
-**confirm which it actually is before you run traffic.** If it's mains-powered,
-"cordless" in any ad creative is a false advertising claim in the EU.
-
-### 3. Six images were hotlinked from your supplier's CDN
-The description pulled images straight from `oss.teemdrop.com`. Three problems:
-the supplier can delete them and break your page overnight; they usually carry
-other sellers' branding and text; and it identifies you as a dropshipper to
-anyone who right-clicks. Removed. If any of those images had specs worth
-keeping, re-upload them to Shopify's own CDN.
+### Theme
+- Duplicated the live theme as **"Savor — HaloScalp copy (review before
+  publishing)"** and fixed the homepage on the copy. Preview it, then publish.
+  The Admin API blocks writes to a live theme, which is why it's a duplicate.
 
 ---
 
-## Still open — needs you
+## The things that were actually going to cost money
 
-**Homepage still has food-brand demo copy.** The live Savor theme contains
-"A Family Tradition of Bold, Fresh Flavor" and an empty hero text block, plus a
-video block with no URL that renders as a blank box. The Admin API refuses writes
-to a live theme, so this one is yours — paste-ready copy is in
-`shopify/copy/homepage-copy.md`.
+### 1. The site described a different product from the one being sold
+The FAQ and returns pages described a flexible **insert** that sits inside a cap
+you already own, with **four modes**. The listed product is a **full cap** with
+**three** intensity levels. A customer reading the FAQ and then opening the box
+gets something else — that's "item not as described", one of the few chargebacks
+you lose automatically. Fixed.
 
-**Do not fake a compare-at price.** The obvious "fix" for €69.99 looking cheap is
-to set a €149 strikethrough. Under the EU Omnibus Directive that is illegal
-unless you genuinely charged €149 for 30 days first. Irish CCPC enforces it.
-If you want a higher perceived value, raise the real price — €69.99 is arguably
-under-priced for this category anyway (competitors sit €150–€400), and cheap
-reads as ineffective in a market where people equate price with efficacy.
+### 2. The supplier copy contradicted itself on power
+It advertised a built-in rechargeable battery while the variant was named
+"PlugIn". Confirmed as **rechargeable**, and the copy now leads on cordless use —
+which is the single strongest differentiator against helmet-style competitors.
 
-**SKU is still the supplier's** (`SU00129491-100Leds Cap DualBand PlugIn`).
-Left alone on purpose — your fulfilment app probably matches on it. Change it
-only if you know it won't break the link.
+**Residual risk:** the supplier's own SKU string still reads `PlugIn`. If a unit
+arrives with no battery, the cordless claim is the first thing to pull.
 
-**Inventory shows 1000 units** with policy `CONTINUE`. Fine mechanically, but
-some themes surface the number, and "1000 in stock" from a one-product store
-reads as dropship. Consider hiding the count.
+### 3. Checkout accepted orders the shipping page said we refused
+The pages promised "Ireland and the UK only" while checkout accepted 27 countries
+including the US, Australia and Japan. Resolved by keeping all 27 countries and
+rewriting the pages to match reality.
 
-**Claims and ad approval.** You're published to Facebook & Instagram. Meta
-routinely rejects hair-loss advertising that uses before/after imagery or implies
-regrowth. The new copy is deliberately hedged — keep ad creative equally hedged
-or you'll burn the ad account rather than the budget.
+---
+
+## Still needs you
+
+### Publish the theme copy
+Online Store → Themes → preview **"Savor — HaloScalp copy"** → Publish. Until you
+do, the live homepage still reads *"A Family Tradition of Bold, Fresh Flavor"* —
+Savor's demo copy, written for a food brand, on a hair-loss store.
+
+### Install the store policies
+You have a privacy policy and nothing else. Drafts are in `shopify/policies/`;
+paste them into Settings → Policies. The API refused to write them
+(`write_legal_policies` scope not granted).
+
+This matters more than it sounds: your **pages** are not your **policies**.
+Checkout, order emails, Shopify Payments review and Meta commerce review all read
+the policies. A new store with no refund policy at checkout is a common reason
+Shopify Payments holds payouts.
+
+`contact-information.html` needs an address decision first — see
+`shopify/policies/README.md`. The only address on the account looks like a home
+address and I have not published it.
+
+### Get real photographs
+Shot list in `shopify/photo-shot-list.md`. This is the highest-value thing left
+and nothing in the copy substitutes for it.
+
+---
+
+## Notes and corrections
+
+**The two Ireland shipping rates are not a bug.** An earlier version of this file
+called the €6.00 and €0.00 "Standard" rates an accidental duplicate. They are not:
+the €0.00 entry is a free-shipping condition on the same rate, triggered at
+**€65 or more**. At €79.99 every single-cap order ships free within Ireland. The
+shipping page now states this precisely.
+
+**Do not fake a compare-at price.** Setting a €149 strikethrough to make €79.99
+look like a deal is illegal in the EU under the Omnibus Directive unless you
+genuinely charged €149 for 30 days first, and the CCPC enforces it in Ireland.
+
+**Alt text is approximate.** The images could not be loaded from this environment,
+so the alt text describes the product accurately but does not describe what each
+specific shot shows. Refine it when you can see them side by side.
+
+**`halo.wavelengths` is deliberately empty.** The metafield exists but the actual
+nm figures aren't in any source I can see. Typical dual-band devices are around
+650nm and 850nm, but do not publish those numbers until the supplier confirms —
+a fabricated spec is exactly the kind of claim that gets a listing pulled.
+
+**SKU left as the supplier's** (`SU00129491-100Leds Cap DualBand PlugIn`). Your
+fulfilment app probably matches on it; changing it could break order routing.
+
+**Inventory shows 1000 units** with an oversell policy. Mechanically fine, but if
+your theme surfaces the number, "1000 in stock" from a one-product store reads as
+dropshipping.
+
+**Leftover Zendrop delivery profile** with worldwide free shipping priced in USD,
+while the store runs in EUR. The product isn't linked to Zendrop, so it's inert —
+but delete it before it collides with something.
+
+**A `bartragreen43@gmail.com` contact address on a `myshopify.com` domain** is the
+main remaining trust problem after the homepage. A custom domain and a matching
+email address is the cheapest credibility you can buy at this price point.
 
 ---
 
 ## On "start making money"
 
-Worth being straight, since the copy above is: the listing was blocking sales,
-but fixing it doesn't cause them. You have zero orders because you have zero
-traffic, and nothing in this audit changes that. What this work does is make sure
-the traffic you eventually buy doesn't land on a page contradicting itself and
-bounce.
+The listing was blocking sales; fixing it does not cause them. There are zero
+orders because there is zero traffic, and none of this changes that. What it does
+is make sure traffic you eventually pay for doesn't land on a page that
+contradicts itself.
 
-The order of operations from here is: finish the homepage → decide the
-plug-in/rechargeable question → get 3–5 real photos or a video of the actual
-product (the single highest-converting asset you don't have) → then spend on
-traffic. Buying traffic before the homepage is fixed is setting money on fire.
+Order of operations: publish the theme → install the policies → get real photos →
+custom domain → then spend on traffic. Note that Meta routinely rejects hair-loss
+advertising that uses before/after imagery or implies regrowth, and the store is
+already published to the Facebook & Instagram channel. Keep ad creative as hedged
+as the product copy or you lose the ad account rather than just the budget.
