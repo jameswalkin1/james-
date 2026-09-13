@@ -289,3 +289,57 @@ That is a workaround. The permanent fix is re-exporting all eight images at 4:5,
 padded rather than cropped — spec and method in `shopify/image-spec.md`. I could
 not do it here: `cdn.shopify.com` is blocked by the session's egress policy, so
 image bytes are unreachable, though Admin API metadata still gave exact dimensions.
+
+---
+
+# Round 5 — homepage stripped back
+
+## The teal t-shirt
+
+That was Shopify's **placeholder graphic**, not a broken image. The
+`featured-product` section renders its media through a `_media-without-appearance`
+block which reads its *own* `image` setting — it does not inherit the product's
+featured image. I left that setting empty when I built the section, so it fell
+back to the placeholder. The title and price rendered fine, which is why only the
+image was wrong.
+
+## New homepage
+
+Replaced `featured-product` with `media-with-content`, holding exactly what was
+asked for:
+
+1. The product image
+2. The price, directly underneath
+3. **Buy now** (primary) → the product page
+4. **How it works** (secondary) → the new page
+
+On mobile the section stacks, so the price and both buttons sit immediately under
+the image. Both buttons are full-width on mobile for tapping.
+
+The price is a `custom-liquid` block reading `all_products[...].price | money`,
+so it tracks the real product price and cannot go stale. A plain text block was
+rejected — `themeFilesUpsert` validates dynamic sources in text settings against
+an allowlist, and `all_products` is not on it.
+
+## New page: How it works
+
+Created `/pages/how-it-works` and added it to both menus. Covers what red light
+therapy is, the five-step routine, why consistency beats intensity, honest
+expectations, and safety.
+
+It deliberately does **not** quote wavelengths, LED counts or Hz figures, because
+the supplier's own images contradict each other:
+
+- One banner: "100 PIECES Red light **660nm**" + "200 PIECES Near red light 850nm"
+- Another banner: "100 High-Performance LEDs" + "**650**nm Red Light + 850nm Near Infrared"
+
+So the source material disagrees with itself on both the LED count (100 vs 300)
+and the red wavelength (650 vs 660nm). None of it is safe to publish as a spec
+until the supplier confirms.
+
+## One thing given up deliberately
+
+The homepage now has **no `<h1>`**, because the request was for image, price and
+two buttons only. That costs some SEO — Google has no headline to read on the
+store's most important page. A single line above the price would fix it without
+adding clutter.
