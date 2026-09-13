@@ -35,7 +35,7 @@
             "thumbnail_position": "bottom",
             "thumbnail_width": 44,
             "thumbnail_radius": 0,
-            "aspect_ratio": "adapt",
+            "aspect_ratio": "1/1.25",
             "constrain_to_viewport": false,
             "media_fit": "contain",
             "media_radius": 0,
@@ -257,9 +257,20 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "gallery_fit_css": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<style>\n  /* Uniform gallery frames without cropping.\n     The theme hard-codes object-fit:cover whenever a fixed aspect ratio is set\n     (see snippets/product-media-gallery-content.liquid). These product images are\n     four different shapes and carry text, so cropping cuts the text off.\n     This keeps the uniform frame and letterboxes the image inside it. */\n  media-gallery .product-media-container :is(img, .deferred-media__poster-image) {\n    object-fit: contain !important;\n    background-color: var(--color-background);\n  }\n  media-gallery .product-media-container {\n    background-color: var(--color-background);\n  }\n</style>",
+        "background_color": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
+    "gallery_fit_css",
     "main"
   ]
 }

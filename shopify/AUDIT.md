@@ -272,3 +272,20 @@ The same banner gives the wavelengths as **660nm and 850nm**, which are the
 standard pairing. The `halo.wavelengths` metafield is still deliberately empty:
 given the LED count on the same image is in dispute, the wavelengths from it are
 not yet trustworthy enough to publish as a spec.
+
+---
+
+# Round 4 — uneven image sizes
+
+The images are four different aspect ratios (5:6, 2:3, 9:16 and square). Reading
+`snippets/product-media-gallery-content.liquid`, the theme allows uniform frames
+*or* uncropped images, never both — a fixed ratio forces `object-fit: cover`.
+
+Applied a fixed `1/1.25` frame plus a `custom-liquid` section holding a CSS
+override that forces `contain` back on. Frames are now identical and nothing is
+cropped; the shape mismatch shows as white space instead of lost content.
+
+That is a workaround. The permanent fix is re-exporting all eight images at 4:5,
+padded rather than cropped — spec and method in `shopify/image-spec.md`. I could
+not do it here: `cdn.shopify.com` is blocked by the session's egress policy, so
+image bytes are unreachable, though Admin API metadata still gave exact dimensions.
