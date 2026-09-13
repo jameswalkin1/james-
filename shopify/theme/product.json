@@ -254,20 +254,60 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "row_box": {
+                "row_spec": {
                   "type": "_accordion-row",
                   "name": "t:names.accordion_row",
                   "settings": {
-                    "heading": "What&rsquo;s in the box",
+                    "heading": "What you get",
                     "open_by_default": true,
-                    "icon": "box",
+                    "icon": "check_box",
                     "width": 20
                   },
                   "blocks": {
                     "text-1": {
                       "type": "text",
                       "settings": {
-                        "text": "<ul><li>HaloScalp LED cap &times; 1</li><li>Charging cable &times; 1</li><li>User manual &times; 1</li></ul><p>Nothing else to buy, nothing to assemble.</p>",
+                        "text": "<ul><li><strong>100 LEDs</strong> across the crown and hairline, in a duckbill cap shape for even coverage.</li><li><strong>Dual-band light</strong> &mdash; red and near-infrared, the two wavelengths used in low-level light therapy for the scalp.</li><li><strong>Infrared warmth</strong> &mdash; a gentle heat setting, like a warm compress.</li><li><strong>3 intensity levels</strong> so you can start low and build up.</li><li><strong>Soft, flexible shell</strong> that sits like a normal cap, not a piece of equipment.</li></ul>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text-1"
+                  ]
+                },
+                "row_why": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "Why a cap, not a helmet",
+                    "open_by_default": false,
+                    "icon": "question_mark",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text-1": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Most light therapy devices are rigid domes you have to sit still under. Sitting still is the reason most people stop after three weeks.</p><p>HaloScalp is shaped like an ordinary cap, so the session fits into what you were already doing. The treatment people keep up with is the one that doesn't ask them to rearrange their evening.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -334,6 +374,46 @@
                     "text-1"
                   ]
                 },
+                "row_box": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "What&rsquo;s in the box",
+                    "open_by_default": false,
+                    "icon": "box",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text-1": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<ul><li>HaloScalp LED cap &times; 1</li><li>Charging cable &times; 1</li><li>User manual &times; 1</li></ul><p>Nothing else to buy, nothing to assemble.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text-1"
+                  ]
+                },
                 "row_delivery": {
                   "type": "_accordion-row",
                   "name": "t:names.accordion_row",
@@ -373,12 +453,55 @@
                   "block_order": [
                     "text-1"
                   ]
+                },
+                "row_safety": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "Results &amp; safety",
+                    "open_by_default": false,
+                    "icon": "heart",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text-1": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Light therapy is gradual, not dramatic. This is a supportive addition to a scalp care routine &mdash; <strong>not a medical device</strong>, not a guaranteed fix, and not a substitute for medical advice. Results vary considerably, and some people will see little or no change.</p><p>If hair loss is causing you real concern, talk to a GP or dermatologist. There are clinically established treatments, and a light therapy cap is not one of them.</p><p>Do not look directly into the LEDs. Check with a doctor first if you have a scalp condition, are photosensitive, take medication that increases light sensitivity, or are pregnant. Not intended for children.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text-1"
+                  ]
                 }
               },
               "block_order": [
-                "row_box",
+                "row_spec",
+                "row_why",
                 "row_use",
-                "row_delivery"
+                "row_box",
+                "row_delivery",
+                "row_safety"
               ]
             }
           },
@@ -387,8 +510,8 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "accordion_sections",
-            "text_gXMUag"
+            "text_gXMUag",
+            "accordion_sections"
           ]
         }
       },
@@ -410,7 +533,7 @@
     "gallery_fit_css": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<style>\n  /* Uniform gallery frames without cropping. The theme hard-codes object-fit:cover\n     whenever a fixed aspect ratio is set (snippets/product-media-gallery-content.liquid).\n     These images are four different shapes and carry text, so cropping cuts it off. */\n  media-gallery .product-media-container :is(img, .deferred-media__poster-image) {\n    object-fit: contain !important;\n    background-color: var(--color-background);\n  }\n  media-gallery .product-media-container {\n    background-color: var(--color-background);\n    border: 1px solid #E2D6C6;\n    border-radius: 14px;\n    overflow: hidden;\n  }\n\n  /* Buy button lift, matching the homepage */\n  .shopify-payment-button__button,\n  product-form-component .button {\n    transition: transform .18s ease, box-shadow .18s ease;\n  }\n  .shopify-payment-button__button:hover,\n  product-form-component .button:hover {\n    transform: translateY(-2px);\n    box-shadow: 0 8px 22px rgba(34, 32, 28, .18);\n  }\n\n  /* Scroll reveal */\n  .hs-r { opacity: 0; transform: translateY(16px);\n    transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }\n  .hs-r.is-in { opacity: 1; transform: none; }\n\n  @media (prefers-reduced-motion: reduce) {\n    .hs-r { opacity: 1; transform: none; transition: none; }\n    .shopify-payment-button__button, product-form-component .button { transition: none; }\n    .shopify-payment-button__button:hover,\n    product-form-component .button:hover { transform: none; }\n  }\n</style>\n\n<script>\n  (function () {\n    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;\n    function start() {\n      var els = document.querySelectorAll('media-gallery .product-media-container');\n      if (!els.length) return;\n      if (reduce || !('IntersectionObserver' in window)) return;\n      var io = new IntersectionObserver(function (entries) {\n        entries.forEach(function (e) {\n          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }\n        });\n      }, { rootMargin: '0px 0px -6% 0px', threshold: 0.1 });\n      els.forEach(function (el, i) {\n        if (i === 0) return;           /* never hide the first image */\n        el.classList.add('hs-r');\n        io.observe(el);\n      });\n    }\n    if (document.readyState === 'loading') {\n      document.addEventListener('DOMContentLoaded', start);\n    } else { start(); }\n  })();\n</script>",
+        "custom_liquid": "<style>\n  /* Uniform gallery frames without cropping. The theme hard-codes object-fit:cover\n     whenever a fixed aspect ratio is set (snippets/product-media-gallery-content.liquid). */\n  media-gallery .product-media-container :is(img, .deferred-media__poster-image) {\n    object-fit: contain !important;\n    background-color: var(--color-background);\n  }\n  media-gallery .product-media-container {\n    background-color: var(--color-background);\n    border: 1px solid #E5E5E3;\n    border-radius: 12px;\n    overflow: hidden;\n  }\n\n  /* Buy button lift, matching the homepage */\n  .shopify-payment-button__button,\n  product-form-component .button {\n    transition: transform .18s ease, box-shadow .18s ease;\n  }\n  .shopify-payment-button__button:hover,\n  product-form-component .button:hover {\n    transform: translateY(-2px);\n    box-shadow: 0 8px 20px rgba(17, 17, 17, .14);\n  }\n\n  /* Accordion rows: bigger tap target, smooth open */\n  .accordion .details__header {\n    padding-block: 1.05rem;\n    cursor: pointer;\n    transition: color .18s ease;\n  }\n  .accordion .details__header:hover { color: #D92D20; }\n  .accordion .details-content > * { animation: hs-slide .32s cubic-bezier(.2,.7,.3,1) both; }\n  @keyframes hs-slide { from { opacity: 0; transform: translateY(-6px); } }\n\n  /* Scroll reveal */\n  .hs-r { opacity: 0; transform: translateY(16px);\n    transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }\n  .hs-r.is-in { opacity: 1; transform: none; }\n\n  @media (prefers-reduced-motion: reduce) {\n    .hs-r { opacity: 1; transform: none; transition: none; }\n    .accordion .details-content > * { animation: none; }\n    .shopify-payment-button__button, product-form-component .button { transition: none; }\n    .shopify-payment-button__button:hover,\n    product-form-component .button:hover { transform: none; }\n  }\n</style>\n\n<script>\n  (function () {\n    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;\n    function start() {\n      var els = document.querySelectorAll('media-gallery .product-media-container');\n      if (!els.length) return;\n      if (reduce || !('IntersectionObserver' in window)) return;\n      var io = new IntersectionObserver(function (entries) {\n        entries.forEach(function (e) {\n          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }\n        });\n      }, { rootMargin: '0px 0px -6% 0px', threshold: 0.1 });\n      els.forEach(function (el, i) {\n        if (i === 0) return;           /* never hide the first image */\n        el.classList.add('hs-r');\n        io.observe(el);\n      });\n    }\n    if (document.readyState === 'loading') {\n      document.addEventListener('DOMContentLoaded', start);\n    } else { start(); }\n  })();\n</script>",
         "background_color": "",
         "section_width": "page-width",
         "padding-block-start": 0,

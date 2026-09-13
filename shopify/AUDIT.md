@@ -479,3 +479,42 @@ override in `gallery_fit_css` could then be removed entirely.
 All six new images had empty alt text; generic but accurate alt text is set. It
 still cannot describe what each shot actually shows, because `cdn.shopify.com`
 remains blocked from this session.
+
+---
+
+# Round 8 — everything into sections
+
+The remaining description content ("Why a cap, not a helmet", "What you get",
+"Straight talk on results", "Safety") was still a wall of text below the buy
+button. It is now all in accordion rows.
+
+Six sections, in the order people actually want them:
+
+| Section | Icon | Default |
+|---|---|---|
+| What you get | check box | **open** |
+| Why a cap, not a helmet | question mark | closed |
+| How to use it | stopwatch | closed |
+| What's in the box | box | closed |
+| Delivery & returns | truck | closed |
+| Results & safety | heart | closed |
+
+The product description is now a **single paragraph** — the lead line only —
+because everything else would otherwise appear twice on the page.
+
+## Two consequences worth knowing
+
+**The detail text now lives in the theme, not in the product.** Accordion content
+is stored in `templates/product.json`, not in Shopify's product record. Changing
+theme, or duplicating the product, will not carry it across. The copy is version
+controlled in this repo (`shopify/theme/product.json`), so it is recoverable, but
+it is no longer edited from the product admin page.
+
+**The Facebook & Instagram catalogue description is now one line.** That channel
+reads the product description field, not the theme. A one-line description is
+thinner than ideal for catalogue ads. If that becomes a problem, the fix is to put
+the fuller copy back in the description field and drop the duplicate accordion
+rows — worth revisiting before any catalogue ad spend.
+
+**SEO is unaffected.** Accordion content sits in `<details>` elements in the page
+HTML, so it is still crawlable; it is collapsed visually, not absent.
