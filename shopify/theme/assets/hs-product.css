@@ -78,12 +78,49 @@ media-gallery .product-media-container--external_video { display: none !importan
   .sticky-add-to-cart__bar .add-to-cart-text__content { display: inline !important; }
 }
 
+/* Buy area ----------------------------------------------------------------
+   Stacked full-width buttons, benefit ticks above, payment + reassurance
+   below. The theme lays the buttons out as a wrapping flex row, which on a
+   phone puts Add to cart and Shop Pay side by side at half width each. */
+.product-form-buttons > *:not(.quantity-selector-wrapper, .quantity-rules,
+  .quantity-label, .volume-pricing, .product-form-text__error) {
+  flex: 1 1 100% !important;
+  min-width: 100% !important;
+}
+
+/* Benefit ticks */
+.hs-bn { list-style: none; margin: 0 0 1.15rem; padding: 0; display: grid; gap: .55rem; }
+.hs-bn__row { display: flex; align-items: flex-start; gap: .6rem; font-size: 1rem; line-height: 1.35; }
+.hs-bn__i { flex: 0 0 auto; margin-top: .1rem; }
+
+/* Payment icons, delivery estimate, reassurance */
+.hs-trust { margin-top: 1.35rem; }
+.hs-trust__pay { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.hs-trust__pay svg { height: 24px; width: auto; border-radius: 4px; }
+.hs-trust__eta {
+  margin: .95rem 0 0; font-size: .95rem; line-height: 1.4; color: #4A4A48;
+}
+.hs-trust__eta strong { color: #111111; font-weight: 700; }
+.hs-trust__eta a { color: #6B6B6B; text-underline-offset: 3px; }
+.hs-trust__eta a:hover { color: #D92D20; }
+.hs-trust__row {
+  list-style: none; margin: .95rem 0 0; padding: .8rem .5rem;
+  border: 1px solid #E5E5E3; border-radius: 12px; background: #FAFAF9;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem;
+}
+.hs-trust__row li {
+  display: flex; flex-direction: column; align-items: center; gap: .3rem;
+  text-align: center; font-size: .76rem; font-weight: 600; line-height: 1.25;
+  color: #4A4A48;
+}
+.hs-trust__row svg { color: #D92D20; }
+
 /* Shop Pay, demoted. Shopify locks the purple, so it is made secondary by
    size and by sitting under a labelled divider rather than by recolouring. */
 .accelerated-checkout-block {
   position: relative;
-  margin-top: 1.75rem;
-  padding-top: 1.6rem;
+  margin-top: 1.15rem;
+  padding-top: 1.35rem;
   border-top: 1px solid #E5E5E3;
   --shop-pay-button-height: 46px;
   --shop-pay-button-border-radius: 10px;

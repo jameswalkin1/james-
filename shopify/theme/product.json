@@ -150,7 +150,7 @@
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
-                "stacking": false,
+                "stacking": true,
                 "text_color": "",
                 "show_pickup_availability": false,
                 "gift_card_form": true,
@@ -511,13 +511,29 @@
                 "custom_liquid": "{%- assign pr = closest.product | default: product -%}\n{%- assign v_native = pr.media | where: 'media_type', 'video' -%}\n{%- assign v_ext = pr.media | where: 'media_type', 'external_video' -%}\n{%- assign v_all = v_native | concat: v_ext -%}\n{%- comment -%}\n  Three video slots. Add videos in Shopify admin under Products - this product -\n  Media (an uploaded file, or a YouTube/Vimeo URL) and they fill the slots in\n  order. The video's ALT TEXT becomes the caption underneath it.\n  Empty slots are drawn only inside the theme editor, so shoppers never see a\n  placeholder; with no videos at all the section is hidden on the live page.\n{%- endcomment -%}\n{%- if v_all.size > 0 or request.design_mode -%}\n<section class=\"hs-vids\" aria-label=\"Product videos\">\n  <h2 class=\"hs-vids__title\">See it in action</h2>\n  <ul class=\"hs-vids__list\">\n    {%- for i in (1..3) -%}\n      {%- assign m = v_all[forloop.index0] -%}\n      {%- if m -%}\n        <li class=\"hs-vids__item\">\n          <div class=\"hs-vid\" data-hs-vid>\n            <img\n              class=\"hs-vid__poster\"\n              src=\"{{ m.preview_image | image_url: width: 720 }}\"\n              alt=\"{{ m.alt | escape }}\"\n              width=\"720\"\n              loading=\"lazy\">\n            <button class=\"hs-vid__play\" type=\"button\" aria-label=\"Play video{% if m.alt != blank %}: {{ m.alt | escape }}{% endif %}\">\n              <span class=\"hs-vid__tri\" aria-hidden=\"true\"></span>\n            </button>\n            <template>{{ m | media_tag: controls: true, autoplay: true, preload: 'none' }}</template>\n          </div>\n          {%- if m.alt != blank -%}<p class=\"hs-vids__cap\">{{ m.alt | escape }}</p>{%- endif -%}\n        </li>\n      {%- elsif request.design_mode -%}\n        <li class=\"hs-vids__item\">\n          <div class=\"hs-vid hs-vid--empty\"><span>Video {{ forloop.index }}</span></div>\n          <p class=\"hs-vids__cap hs-vids__cap--empty\">Add a video to the product media</p>\n        </li>\n      {%- endif -%}\n    {%- endfor -%}\n  </ul>\n</section>\n{%- endif -%}"
               },
               "blocks": {}
+            },
+            "buy_benefits": {
+              "type": "custom-liquid",
+              "settings": {
+                "custom_liquid": "<ul class=\"hs-bn\"><li class=\"hs-bn__row\"><svg class=\"hs-bn__i\" viewBox=\"0 0 20 20\" width=\"19\" height=\"19\" aria-hidden=\"true\" focusable=\"false\"><circle cx=\"10\" cy=\"10\" r=\"10\" fill=\"#D92D20\"></circle><path d=\"M5.7 10.3l2.7 2.7 5.9-5.9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg><span>100 LEDs across the crown and hairline</span></li><li class=\"hs-bn__row\"><svg class=\"hs-bn__i\" viewBox=\"0 0 20 20\" width=\"19\" height=\"19\" aria-hidden=\"true\" focusable=\"false\"><circle cx=\"10\" cy=\"10\" r=\"10\" fill=\"#D92D20\"></circle><path d=\"M5.7 10.3l2.7 2.7 5.9-5.9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg><span>Dual-band red and near-infrared, plus gentle warmth</span></li><li class=\"hs-bn__row\"><svg class=\"hs-bn__i\" viewBox=\"0 0 20 20\" width=\"19\" height=\"19\" aria-hidden=\"true\" focusable=\"false\"><circle cx=\"10\" cy=\"10\" r=\"10\" fill=\"#D92D20\"></circle><path d=\"M5.7 10.3l2.7 2.7 5.9-5.9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg><span>Soft cap shape — wear it and carry on</span></li><li class=\"hs-bn__row\"><svg class=\"hs-bn__i\" viewBox=\"0 0 20 20\" width=\"19\" height=\"19\" aria-hidden=\"true\" focusable=\"false\"><circle cx=\"10\" cy=\"10\" r=\"10\" fill=\"#D92D20\"></circle><path d=\"M5.7 10.3l2.7 2.7 5.9-5.9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg><span>30-day returns and a 14-day right to cancel</span></li></ul>"
+              },
+              "blocks": {}
+            },
+            "buy_trust": {
+              "type": "custom-liquid",
+              "settings": {
+                "custom_liquid": "<div class=\"hs-trust\"><div class=\"hs-trust__pay\">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'hs-trust__pay-icon' }}{%- endfor -%}</div>{%- assign eta_a = 'now' | date: '%s' | plus: 950400 -%}{%- assign eta_b = 'now' | date: '%s' | plus: 2419200 -%}<p class=\"hs-trust__eta\">Estimated delivery <strong>{{ eta_a | date: '%-d %b' }} – {{ eta_b | date: '%-d %b' }}</strong>, tracked. <a href=\"/pages/shipping\">How we ship</a></p><ul class=\"hs-trust__row\"><li><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 7h10v9H3z\"></path><path d=\"M13 10h4l3 3v3h-7z\"></path><circle cx=\"7\" cy=\"18\" r=\"1.6\"></circle><circle cx=\"17\" cy=\"18\" r=\"1.6\"></circle></svg><span>Tracked delivery</span></li><li><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 11a8 8 0 1 1 2.3 5.7\"></path><path d=\"M3 5v6h6\"></path></svg><span>30-day returns</span></li><li><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 3l7 3v5.5c0 4.3-3 8-7 9.5-4-1.5-7-5.2-7-9.5V6z\"></path><path d=\"M8.8 12.2l2.2 2.2 4.2-4.2\"></path></svg><span>2-year EU guarantee</span></li></ul></div>"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "text_tefwj7",
             "price_a7krng",
             "variant_picker_R3rGDr",
+            "buy_benefits",
             "buy_buttons_eYQEYi",
+            "buy_trust",
             "video_section",
             "text_gXMUag",
             "accordion_sections"

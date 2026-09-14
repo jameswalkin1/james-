@@ -815,3 +815,60 @@ Desktop keeps the theme's fuller bar — thumbnail, title, price, button.
 **Not a bug:** the black strip with the flag in the screenshot is Shopify's own
 draft-theme preview toolbar. It is not part of the store and shoppers never see
 it. It disappears once the theme is published.
+
+---
+
+# Round 16 — buy area rebuilt
+
+Matched to the layout in the competitor screenshot, with four things deliberately
+left out. See below.
+
+## What changed
+
+The buy buttons were sitting **side by side at half width each** — Add to cart on
+the left, the "or check out with" divider and Shop Pay squashed on the right. That
+was the theme's `stacking: false` setting plus its wrapping flex row.
+
+Now, top to bottom:
+
+1. **Four benefit ticks** above the button — red circular checkmarks:
+   100 LEDs across the crown and hairline · dual-band red and near-infrared, plus
+   gentle warmth · soft cap shape, wear it and carry on · 30-day returns and a
+   14-day right to cancel.
+2. **Add to cart — €79,99**, full width, red.
+3. **Buy with Shop**, full width beneath, under the small "or check out with"
+   divider that keeps it secondary.
+4. **Payment icons** — pulled live from `shop.enabled_payment_types`, so the row
+   always shows exactly the methods checkout actually accepts. Nothing hardcoded,
+   nothing to go stale.
+5. **Estimated delivery date range**, calculated in Liquid from the real numbers
+   in the shipping policy: 1–2 business days to dispatch plus 7–18 business days
+   in transit, so roughly 11–28 calendar days. It updates itself daily.
+6. **Reassurance strip**: tracked delivery · 30-day returns · 2-year EU guarantee.
+
+## What was deliberately not copied
+
+The reference page does four things that are either illegal here or a liability:
+
+- **"HOT PRODUCT | LOW STOCK"** — fabricated scarcity. Nothing on this store is
+  low stock.
+- **"$119.99, was $239.99, $120 off ends soon"** — under the EU **Omnibus
+  Directive** (SI 483/2022 in Ireland), a "was" price must be the lowest price
+  actually charged in the previous 30 days. This product has never sold at €239.
+  Displaying that strikethrough is a prosecutable offence, not a grey area, and
+  the perpetual "ends soon" countdown compounds it.
+- **"Dr. Jane Smith — clinically proven hair regrowth"** — a fabricated
+  practitioner endorsing an unproven medical claim. Two separate problems, either
+  of which is enough on its own.
+- **Forbes / USA Today / ELLE logos** — fabricated press coverage.
+
+The competitor may well be getting away with it today. That is not the same as it
+being safe, and the downside lands on whoever owns the store.
+
+## The delivery estimate is the honest number, and it is the problem
+
+11–28 days is what the current supply chain actually does, and the reference page
+claims 3. That gap is not a copywriting problem — it is the single biggest
+conversion disadvantage on this page, and no wording fixes it. The lever is a
+faster supplier or stocked inventory. Deleting the line just moves the
+disappointment to the order-status page and turns it into refunds and chargebacks.
