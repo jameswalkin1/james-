@@ -699,3 +699,43 @@ rather than me.
 
 **The returns page still cites EU and UK consumer law.** Those are the statutory
 rights your customers actually have; they are not brand positioning.
+
+---
+
+# Round 13 — video section
+
+A "See it in use" section now sits **directly under the Add to cart button**,
+above the description and the accordions.
+
+## How it is wired
+
+It reads videos from the **product's own media**, not from hardcoded URLs. Add up
+to three in Shopify admin (Products → this product → Media → Add video; an
+uploaded file or a YouTube/Vimeo URL) and they appear automatically, in order.
+
+**There are currently no videos in the store at all** — seven images, zero video
+files — so the section renders nothing today. That is deliberate: an empty video
+box on a live page is worse than no section, so the whole block is wrapped in
+`{% if v_all.size > 0 %}`.
+
+Videos are hidden from the main gallery via CSS, so attaching them to the product
+does not show each one twice.
+
+## Refactor: CSS and JS moved to theme assets
+
+The first attempt at this failed — `themeFilesUpsert` rejected the payload with
+"Invalid JSON", because the template had grown to ~23KB of hand-assembled JSON
+with CSS and JavaScript embedded as escaped strings, and it was getting fragile
+to edit.
+
+Split out instead:
+
+- `assets/hs-product.css` — gallery, quantity, add-to-cart, Shop Pay, accordion,
+  video and reveal styles
+- `assets/hs-product.js` — price-in-button and scroll reveal
+- `templates/product.json` — down from ~23KB to 14.5KB; the polish block is now
+  three lines linking those assets and passing the price through
+  `window.HS_PRICE`
+
+Same behaviour, much smaller blast radius on future edits, and the CSS/JS are now
+editable as normal files in the theme editor.

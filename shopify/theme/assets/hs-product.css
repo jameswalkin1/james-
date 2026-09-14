@@ -1,0 +1,120 @@
+/* HaloScalp product page ------------------------------------------------- */
+
+/* Gallery: the theme hard-codes object-fit:cover whenever a fixed aspect ratio
+   is set (snippets/product-media-gallery-content.liquid). These images carry
+   text, so cropping cuts it off. Keep the uniform frame, letterbox inside. */
+media-gallery .product-media-container :is(img, .deferred-media__poster-image) {
+  object-fit: contain !important;
+  background-color: var(--color-background);
+}
+media-gallery .product-media-container {
+  background-color: var(--color-background);
+  border: 1px solid #E5E5E3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Videos have their own section below the buy button, so don't show them twice */
+media-gallery .product-media-container--video,
+media-gallery .product-media-container--external_video { display: none !important; }
+
+/* Quantity: hidden on the product form only. The cart renders
+   cart-quantity-selector-component, so :has() leaves it alone. */
+.quantity-selector-wrapper:has(quantity-selector-component) { display: none !important; }
+
+/* Add to cart */
+.add-to-cart-button {
+  width: 100% !important;
+  border-radius: 10px !important;
+  padding-block: 1.05rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: 0 2px 0 rgba(17, 17, 17, .10);
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.add-to-cart-button:hover,
+.add-to-cart-button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(217, 45, 32, .28);
+}
+.add-to-cart-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 0 rgba(17, 17, 17, .10);
+}
+.hs-price-tag { font-weight: 700; opacity: .92; }
+
+/* Shop Pay, demoted. Shopify locks the purple, so it is made secondary by
+   size and by sitting under a labelled divider rather than by recolouring. */
+.accelerated-checkout-block {
+  position: relative;
+  margin-top: 1.75rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid #E5E5E3;
+  --shop-pay-button-height: 46px;
+  --shop-pay-button-border-radius: 10px;
+}
+.accelerated-checkout-block::before {
+  content: "or check out with";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-background);
+  padding: 0 .7rem;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #6B6B6B;
+  white-space: nowrap;
+}
+.shopify-payment-button__more-options {
+  font-size: .85rem;
+  color: #6B6B6B;
+  text-underline-offset: 3px;
+  margin-top: .6rem;
+}
+.shopify-payment-button__more-options:hover { color: #111111; }
+
+/* Videos */
+.hs-vids { margin-block: 1.75rem 0; }
+.hs-vids__title {
+  font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: #6B6B6B; margin: 0 0 .9rem;
+}
+.hs-vids__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.hs-vids__frame {
+  border: 1px solid #E5E5E3; border-radius: 12px; overflow: hidden;
+  background: #F7F7F6; line-height: 0;
+}
+.hs-vids__frame :is(video, iframe) {
+  display: block; width: 100%; height: auto; max-height: 70vh;
+}
+.hs-vids__frame iframe { aspect-ratio: 16 / 9; height: auto; }
+.hs-vids__cap { margin: .5rem 0 0; font-size: .85rem; color: #6B6B6B; }
+
+/* Accordion rows */
+.accordion .details__header {
+  padding-block: 1.05rem;
+  cursor: pointer;
+  transition: color .18s ease;
+}
+.accordion .details__header:hover { color: #D92D20; }
+.accordion .details-content > * { animation: hs-slide .32s cubic-bezier(.2,.7,.3,1) both; }
+@keyframes hs-slide { from { opacity: 0; transform: translateY(-6px); } }
+
+/* Scroll reveal */
+.hs-r {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1);
+}
+.hs-r.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hs-r { opacity: 1; transform: none; transition: none; }
+  .accordion .details-content > * { animation: none; }
+  .add-to-cart-button { transition: none; }
+  .add-to-cart-button:hover { transform: none; }
+}
