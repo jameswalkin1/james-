@@ -739,3 +739,42 @@ Split out instead:
 
 Same behaviour, much smaller blast radius on future edits, and the CSS/JS are now
 editable as normal files in the theme editor.
+
+---
+
+# Round 14 — video section rebuilt as "See it in action"
+
+Rebuilt to match the three-across layout you sent through.
+
+## What changed
+
+- Retitled **"See it in action"**.
+- Three **9:16 portrait slots** in a horizontal row that scroll-snaps on a phone
+  (68% width each, so the third peeks in and invites a swipe) and shows all three
+  on desktop (47% each).
+- Circular white **play button** over each poster, caption underneath.
+- **The caption is the video's alt text.** Whatever you type as alt text in
+  Shopify is what shows under that video.
+- **Click to load.** The real video markup sits inside a `<template>` tag and is
+  inert until the play button is pressed, so three videos cost zero bandwidth
+  until someone actually wants one. Product pages with autoplaying video are slow,
+  and slow pages lose sales.
+
+## Filling the slots
+
+Shopify admin → Products → this product → **Media → Add video**. Either upload a
+file or paste a YouTube/Vimeo URL. They fill the three slots in the order they sit
+in the media list — drag to reorder.
+
+Empty slots render **only inside the theme editor**, so you can see the three
+spaces while you work. Shoppers never see a placeholder: with no videos attached
+the whole section is absent from the live page, and with one or two attached only
+those render.
+
+Videos stay hidden from the main image gallery, so attaching them doesn't show
+each one twice.
+
+## Where it is
+
+Draft theme **"HaloScalp — buy button update (review before publishing)"**, same
+as the buy-button work. Nothing is live until you publish it.

@@ -31,9 +31,29 @@
     });
   }
 
+
+  /* Click-to-load videos: the real markup lives in a <template>, so no video or
+     iframe is fetched until someone actually asks for it. */
+  function wireVideos() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.hs-vid__play') : null;
+      if (!btn) return;
+      var wrap = btn.closest('[data-hs-vid]');
+      if (!wrap) return;
+      var tpl = wrap.querySelector('template');
+      if (!tpl) return;
+      var frag = tpl.content.cloneNode(true);
+      wrap.innerHTML = '';
+      wrap.appendChild(frag);
+      var v = wrap.querySelector('video');
+      if (v && v.play) { var p = v.play(); if (p && p.catch) { p.catch(function () {}); } }
+    });
+  }
+
   function start() {
     labelPrice();
     revealGallery();
+    wireVideos();
     var form = document.querySelector('product-form-component') || document.body;
     if ('MutationObserver' in window) {
       new MutationObserver(labelPrice).observe(form, { childList: true, subtree: true });
