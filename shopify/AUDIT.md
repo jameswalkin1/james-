@@ -778,3 +778,40 @@ each one twice.
 
 Draft theme **"HaloScalp — buy button update (review before publishing)"**, same
 as the buy-button work. Nothing is live until you publish it.
+
+---
+
+# Round 15 — sticky add-to-cart bar fixed
+
+The broken bar at the bottom of the phone screen was my own doing, two rounds back.
+
+**What went wrong.** The theme's sticky bar button carries the class
+`add-to-cart-button`, the same class as the big button on the page. So two things
+I wrote for the big button landed on the sticky one as well:
+
+1. `width: 100% !important` — on a phone the theme deliberately shrinks that
+   button to a small square icon. Forcing it to full width shoved the title and
+   price into a sliver, where they wrapped and collided.
+2. The JavaScript that appends `— €79.99` inside the button. The sticky bar
+   already prints the price beside it, so the price appeared twice and dragged
+   the button wider still.
+
+**Fixes.**
+
+- Both rules now exclude `.sticky-add-to-cart__button`, so the sticky bar keeps
+  the theme's own sizing and never gets a second price stamped into it.
+- Rebuilt the bar for a phone: the thumbnail and the product title come off (on a
+  one-product store nobody needs telling what they're looking at halfway down its
+  own page), leaving **price on the left, a full "Add to cart" button filling the
+  rest**. That is the layout every well-built product page uses on mobile, and it
+  gives the tap target real width.
+- The variant line ("100 LED Dual-Band") is hidden. There is exactly one variant,
+  so it was noise.
+- Added `env(safe-area-inset-bottom)` padding, so the bar clears the iPhone home
+  indicator instead of sitting under it.
+
+Desktop keeps the theme's fuller bar — thumbnail, title, price, button.
+
+**Not a bug:** the black strip with the flag in the screenshot is Shopify's own
+draft-theme preview toolbar. It is not part of the store and shoppers never see
+it. It disappears once the theme is published.

@@ -22,8 +22,9 @@ media-gallery .product-media-container--external_video { display: none !importan
    cart-quantity-selector-component, so :has() leaves it alone. */
 .quantity-selector-wrapper:has(quantity-selector-component) { display: none !important; }
 
-/* Add to cart */
-.add-to-cart-button {
+/* Add to cart. Scoped away from the sticky bar's button, which is a small
+   inline button in a flex row and must not stretch. */
+.add-to-cart-button:not(.sticky-add-to-cart__button) {
   width: 100% !important;
   border-radius: 10px !important;
   padding-block: 1.05rem;
@@ -33,16 +34,49 @@ media-gallery .product-media-container--external_video { display: none !importan
   box-shadow: 0 2px 0 rgba(17, 17, 17, .10);
   transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
 }
-.add-to-cart-button:hover,
-.add-to-cart-button:focus-visible {
+.add-to-cart-button:not(.sticky-add-to-cart__button):hover,
+.add-to-cart-button:not(.sticky-add-to-cart__button):focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(217, 45, 32, .28);
 }
-.add-to-cart-button:active {
+.add-to-cart-button:not(.sticky-add-to-cart__button):active {
   transform: translateY(0);
   box-shadow: 0 2px 0 rgba(17, 17, 17, .10);
 }
 .hs-price-tag { font-weight: 700; opacity: .92; }
+
+/* Sticky add-to-cart bar ---------------------------------------------------
+   One variant, one product, so the variant line under the title is noise.
+   On a phone the bar is cut to what actually matters: price and a real
+   button with a word on it, clear of the iPhone home indicator. */
+.sticky-add-to-cart__variant { display: none !important; }
+
+.sticky-add-to-cart__bar {
+  padding-bottom: calc(var(--padding-sm) + env(safe-area-inset-bottom, 0px));
+  gap: 0.75rem;
+}
+
+@media screen and (max-width: 749px) {
+  .sticky-add-to-cart__image,
+  .sticky-add-to-cart__info { display: none !important; }
+
+  .sticky-add-to-cart__price {
+    flex: 0 0 auto;
+    padding-left: 0.35rem;
+    font-size: 1.05rem !important;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .sticky-add-to-cart__bar .sticky-add-to-cart__button {
+    flex: 1 1 auto;
+    width: auto !important;
+    padding-inline: 1rem !important;
+    border-radius: 10px !important;
+    font-weight: 700;
+  }
+  .sticky-add-to-cart__bar .add-to-cart-text__content { display: inline !important; }
+}
 
 /* Shop Pay, demoted. Shopify locks the purple, so it is made secondary by
    size and by sitting under a labelled divider rather than by recolouring. */

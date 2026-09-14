@@ -7,6 +7,8 @@
   function labelPrice() {
     if (!PRICE) return;
     document.querySelectorAll('.add-to-cart-button').forEach(function (btn) {
+      /* Not the sticky bar: it already shows the price next to the button. */
+      if (btn.classList.contains('sticky-add-to-cart__button')) return;
       if (btn.querySelector('.hs-price-tag')) return;
       if (btn.hasAttribute('disabled')) return;
       var tag = document.createElement('span');
