@@ -518,3 +518,39 @@ rows — worth revisiting before any catalogue ad spend.
 
 **SEO is unaffected.** Accordion content sits in `<details>` elements in the page
 HTML, so it is still crawlable; it is collapsed visually, not absent.
+
+---
+
+# Round 9 — homepage hero image
+
+Swapped the homepage image from the "Concentrated light therapy" infographic to
+the clean packshot (the two caps, one lit). It is the better homepage image by a
+distance: a product shot rather than a dense spec diagram, and it does not fight
+the headline sitting beside it.
+
+**Selected by alt text, not position.** The image carries the alt
+`HaloScalp LED red light hair care cap`, and the homepage Liquid picks it with
+`where: 'alt', ...` falling back to the featured image. Reordering the gallery
+cannot break it, and swapping the hero later is a matter of moving that alt string
+to a different image. A comment in the Liquid says so.
+
+Confirmed it is the sixth of seven in the gallery, matching the carousel dot in
+the screenshot.
+
+## Correction: the "100 vs 300 LEDs" contradiction is probably not one
+
+Earlier rounds flagged the LED count as a possible false-advertising problem. With
+both new banners readable, the numbers reconcile:
+
+- Packshot: "300 three-core lamp beads"
+- Spec banner: "100 PIECES Red light 660nm" + "200 PIECES Near red light 850nm"
+
+100 + 200 = 300. The two banners agree with each other; they are counting the same
+device. So this is not a contradiction between images — it is a mismatch between
+the images and **our** title, which says 100 LEDs.
+
+The likely explanation is that 100 refers to the red emitters only, or to physical
+modules rather than beads. Either way the title may be **underselling** a 300-bead
+device rather than overstating a 100-LED one, which is the opposite of the risk
+originally flagged. Still worth one message to the supplier before changing the
+title or the homepage "100 LEDs" stat — but the compliance alarm can be stood down.

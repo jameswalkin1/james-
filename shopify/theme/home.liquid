@@ -1,5 +1,7 @@
 {%- assign p = all_products['led-red-light-therapy-hair-growth-cap-with-infrared-heat'] -%}
-{%- assign hero_img = p.images[2] | default: p.featured_image -%}
+{%- comment -%} Hero image is picked by alt text so reordering the gallery cannot break it.
+   To use a different photo, set that image's alt text to the string below. {%- endcomment -%}
+{%- assign hero_img = p.images | where: 'alt', 'HaloScalp LED red light hair care cap' | first | default: p.featured_image -%}
 
 <div class="hs">
   <section class="hs-hero">
