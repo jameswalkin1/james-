@@ -602,3 +602,49 @@ disabled (sold out) buttons.
 
 Also tidied "More payment options" from a bare underlined link into something
 deliberately quiet.
+
+---
+
+# Round 11 — status review
+
+Live check, not memory.
+
+| | Status |
+|---|---|
+| Live theme | `Savor — HaloScalp copy` (published) |
+| Buy-button draft | **not published yet** |
+| Storefront | public, no password |
+| Product | ACTIVE, on Online Store / Shop / POS / Facebook & Instagram |
+| Orders | **0** |
+| Domain | `zj9dzm-vc.myshopify.com` — **no custom domain** |
+| Policies | **privacy only** — refund, shipping, terms, contact all still missing |
+| Contact email | `bartragreen43@gmail.com` |
+| Inventory | 1000, oversell on |
+
+Fixed this round: the SEO meta description still read "Ships to Ireland & the UK",
+left over from before the shipping scope changed. It now matches the 28
+destinations checkout actually accepts. Search engines were being told something
+the shipping page contradicts.
+
+## The four things blocking a sale
+
+1. **Store policies.** Still privacy-only. Drafts have been sitting in
+   `shopify/policies/` since round 1. Checkout, order emails and Shopify Payments
+   review all read these, not the pages.
+2. **Nobody has ever completed a checkout.** Zero orders means the payment →
+   confirmation → fulfilment path has never been exercised end to end. A test
+   purchase is the only way to know it works.
+3. **No custom domain.** `zj9dzm-vc.myshopify.com` reads as unfinished to a
+   first-time visitor being asked for €79.99.
+4. **No social proof of any kind.** No reviews, no photos that aren't the
+   supplier's, no named business.
+
+## The number that decides whether ads are viable
+
+The landed cost per unit is not recorded anywhere in this store, and it decides
+everything about paid traffic. At €79.99 with free Irish delivery, gross margin
+is €79.99 minus landed cost minus transaction fees. Meta customer acquisition
+cost in hair-loss categories commonly runs €30–60. If landed cost is €35, there
+is roughly €40 of room and ads are marginal-but-possible; if it is €55, paid
+acquisition cannot work at this price and the route has to be organic or the
+price has to rise.
