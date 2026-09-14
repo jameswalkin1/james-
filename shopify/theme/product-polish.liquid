@@ -1,0 +1,152 @@
+{%- assign hs_price = product.price | money -%}
+<style>
+  /* ---- Gallery -------------------------------------------------------
+     The theme hard-codes object-fit:cover whenever a fixed aspect ratio is
+     set (snippets/product-media-gallery-content.liquid). These images carry
+     text, so cropping cuts it off. Keep the uniform frame, letterbox inside. */
+  media-gallery .product-media-container :is(img, .deferred-media__poster-image) {
+    object-fit: contain !important;
+    background-color: var(--color-background);
+  }
+  media-gallery .product-media-container {
+    background-color: var(--color-background);
+    border: 1px solid #E5E5E3;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* ---- Quantity ------------------------------------------------------
+     Hidden on the product form only. The cart uses
+     cart-quantity-selector-component, so :has() leaves it untouched and
+     shoppers can still change quantity there. */
+  .quantity-selector-wrapper:has(quantity-selector-component) { display: none !important; }
+
+  /* ---- Add to cart ---------------------------------------------------- */
+  .add-to-cart-button {
+    width: 100% !important;
+    border-radius: 10px !important;
+    padding-block: 1.05rem;
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    box-shadow: 0 2px 0 rgba(17, 17, 17, .10);
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+  }
+  .add-to-cart-button:hover,
+  .add-to-cart-button:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(217, 45, 32, .28);
+  }
+  .add-to-cart-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 0 rgba(17, 17, 17, .10);
+  }
+  .hs-price-tag { font-weight: 700; opacity: .92; }
+
+  /* ---- Shop Pay, demoted --------------------------------------------
+     Shopify locks the purple, so it is made secondary by size and by
+     sitting under a labelled divider rather than by recolouring. */
+  .accelerated-checkout-block {
+    position: relative;
+    margin-top: 1.75rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid #E5E5E3;
+    --shop-pay-button-height: 46px;
+    --shop-pay-button-border-radius: 10px;
+  }
+  .accelerated-checkout-block::before {
+    content: "or check out with";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-background);
+    padding: 0 .7rem;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #6B6B6B;
+    white-space: nowrap;
+  }
+  .shopify-payment-button__more-options {
+    font-size: .85rem;
+    color: #6B6B6B;
+    text-underline-offset: 3px;
+    margin-top: .6rem;
+  }
+  .shopify-payment-button__more-options:hover { color: #111111; }
+
+  /* ---- Accordion rows ------------------------------------------------- */
+  .accordion .details__header {
+    padding-block: 1.05rem;
+    cursor: pointer;
+    transition: color .18s ease;
+  }
+  .accordion .details__header:hover { color: #D92D20; }
+  .accordion .details-content > * { animation: hs-slide .32s cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes hs-slide { from { opacity: 0; transform: translateY(-6px); } }
+
+  /* ---- Scroll reveal --------------------------------------------------- */
+  .hs-r {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1);
+  }
+  .hs-r.is-in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hs-r { opacity: 1; transform: none; transition: none; }
+    .accordion .details-content > * { animation: none; }
+    .add-to-cart-button { transition: none; }
+    .add-to-cart-button:hover { transform: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var PRICE = {{ hs_price | json }};
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Put the price inside the Add to cart button, and keep it there if the
+       theme re-renders the form after a variant or cart change. */
+    function labelPrice() {
+      document.querySelectorAll('.add-to-cart-button').forEach(function (btn) {
+        if (btn.querySelector('.hs-price-tag')) return;
+        if (btn.hasAttribute('disabled')) return;
+        var tag = document.createElement('span');
+        tag.className = 'hs-price-tag';
+        tag.textContent = ' — ' + PRICE;
+        btn.appendChild(tag);
+      });
+    }
+
+    function revealGallery() {
+      var els = document.querySelectorAll('media-gallery .product-media-container');
+      if (!els.length || reduce || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -6% 0px', threshold: 0.1 });
+      els.forEach(function (el, i) {
+        if (i === 0) return;            /* never hide the first image */
+        el.classList.add('hs-r');
+        io.observe(el);
+      });
+    }
+
+    function start() {
+      labelPrice();
+      revealGallery();
+      var form = document.querySelector('product-form-component') || document.body;
+      if ('MutationObserver' in window) {
+        new MutationObserver(labelPrice).observe(form, { childList: true, subtree: true });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else { start(); }
+  })();
+</script>

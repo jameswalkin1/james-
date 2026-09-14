@@ -554,3 +554,51 @@ modules rather than beads. Either way the title may be **underselling** a 300-be
 device rather than overstating a 100-LED one, which is the opposite of the risk
 originally flagged. Still worth one message to the supplier before changing the
 title or the homepage "100 LEDs" stat — but the compliance alarm can be stood down.
+
+---
+
+# Round 10 — buy buttons
+
+**The theme is live.** The draft was published between rounds, so
+`Savor — HaloScalp copy` is now MAIN and the API refuses writes to it. Changes
+now go on a fresh duplicate — currently
+**"HaloScalp — buy button update (review before publishing)"** — which a person
+publishes manually. That is the loop from here on.
+
+Four decisions taken with the user first.
+
+## Shop Pay, demoted not deleted
+
+Shopify locks the Shop Pay purple; it cannot be recoloured by anyone, so the only
+real choices were keep or hide. Kept for the one-tap conversion, but made
+secondary: pushed below a hairline divider labelled "or check out with", height
+reduced to 46px, corners matched to 10px. Add to cart is unambiguously the
+primary action now.
+
+## Quantity picker hidden
+
+`.quantity-selector-wrapper:has(quantity-selector-component)` — scoped with
+`:has()` so it only hides on the **product form**. The cart renders
+`cart-quantity-selector-component` instead, so shoppers can still change quantity
+there and no sale is lost. Add to cart takes the full row.
+
+Note this is CSS, not a template removal: the block is a *static* block, so the
+theme renders it whether or not it appears in `product.json`. Hiding was the only
+route. Browsers without `:has()` support will still show it, which is a harmless
+fallback.
+
+## Add to cart restyled
+
+Full width, 10px corners, heavier weight, larger tap target, a 2px resting shadow
+that lifts to a red-tinted glow on hover and presses back down on click. Matches
+the homepage buttons so the two pages read as one site.
+
+## Price in the button
+
+"Add to cart — €79.99". Injected by JS from `{{ product.price | money }}`, so it
+tracks the real price rather than being typed in. A MutationObserver re-applies
+it if the theme re-renders the form after a cart or variant change, and it skips
+disabled (sold out) buttons.
+
+Also tidied "More payment options" from a bare underlined link into something
+deliberately quiet.
