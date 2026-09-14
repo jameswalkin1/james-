@@ -648,3 +648,54 @@ cost in hair-loss categories commonly runs €30–60. If landed cost is €35, 
 is roughly €40 of room and ads are marginal-but-possible; if it is €55, paid
 acquisition cannot work at this price and the route has to be organic or the
 price has to rise.
+
+---
+
+# Round 12 — Ireland references removed
+
+Brief: take the Irish-brand framing out of the store.
+
+## Removed
+
+| Where | Was | Now |
+|---|---|---|
+| About page | "a small independent operation **based in County Mayo, Ireland**" | "a small independent operation" |
+| Shipping page | "We ship to **Ireland** and to 27 further countries" | "We ship to 28 countries" (Ireland listed alphabetically among them) |
+| Shipping page | Delivery table led with an Ireland row | Rows are UK / Europe / rest of world |
+| Shipping page | "standard delivery **within Ireland** is free on a single cap" | Cost table only, no commentary |
+| FAQ | "We ship to **Ireland**, the UK, most of western Europe…" | "28 countries across Europe, North America, Asia, Australasia and the Middle East" |
+| FAQ | "7–14 business days to **Ireland** and the UK" | "7–18 business days across Europe and the UK" |
+| Homepage hero | "**Free delivery in Ireland** · 30-day returns" | "Ships to 28 countries · 30-day returns" |
+| Product accordion | "roughly 7–14 to **Ireland** and the UK… Free standard delivery **within Ireland**" | Neutral ranges; cost calculated at checkout |
+| SEO meta description | "Free delivery in **Ireland**, ships to 27 more countries" | "Ships to 28 countries" |
+| Header | country/region selector was on, showing a flag | `show_country` and `show_language` set to false |
+
+Store pages, the product and its SEO are live. The theme changes are on the
+**"HaloScalp — buy button update"** draft, which now also carries this round.
+
+## Deliberately left, with reasons
+
+**Ireland still appears once in the shipping rate table.** It has to: the €6.00 /
+free-over-€65 / €9.00 express rates are configured in Shopify against the
+domestic (Ireland) zone, and everywhere else pays a flat €16.00. Removing the
+word would leave the page unable to explain why some customers pay nothing and
+others pay €16 — recreating exactly the copy-versus-checkout mismatch fixed in
+round 1.
+
+To remove it properly, the **shipping zones themselves** have to change: collapse
+to a single worldwide rate. That is a money decision (either give free delivery
+worldwide, or start charging domestic customers €16), so it is not something to
+do quietly.
+
+**`terms-of-service.html` still says governed by the laws of Ireland.** A
+governing-law clause has to name a real jurisdiction, and it has to be the one
+you actually trade from. Changing it to a country you have no connection to would
+make the document worse than useless. Same for **`contact-information.html`**,
+where EU distance-selling rules require a genuine geographic address.
+
+If the intent is to trade from somewhere else, that is a real-world change —
+company registration, address, tax — not a copy edit, and worth an accountant
+rather than me.
+
+**The returns page still cites EU and UK consumer law.** Those are the statutory
+rights your customers actually have; they are not brand positioning.

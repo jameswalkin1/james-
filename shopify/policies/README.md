@@ -19,15 +19,14 @@ reason Shopify Payments holds payouts on a new store.
 
 ## Contact information — read before pasting
 
-EU and Irish distance-selling rules require a **geographic address** on the site,
-not just an email. The only address on your Shopify account is
-**8 Bartra Green, Co. Mayo, F26 Y039** — which looks like your home address.
+EU distance-selling rules require a **geographic address** on the site, not just
+an email. The only address on your Shopify account looks like a home address.
 
 I have deliberately **not** published it. Your options:
 
 1. Publish it. Legally cleanest, but it is then public on the open internet.
-2. Register a business address or use a virtual office / mail-forwarding service
-   in Ireland, and publish that.
+2. Register a business address or use a virtual office / mail-forwarding service,
+   and publish that.
 3. If you trade as a registered company, use the registered office address.
 
 Fill the `[ADDRESS]` placeholder in `contact-information.html` with whichever you

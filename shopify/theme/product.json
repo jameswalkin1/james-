@@ -427,7 +427,7 @@
                     "text-1": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Dispatched within 1&ndash;2 business days. After that, roughly 7&ndash;14 business days to Ireland and the UK, and 10&ndash;20 business days further afield.</p><p><strong>Free standard delivery within Ireland.</strong> You have a 14-day legal right to cancel and a 30-day return window on top of it. If it arrives faulty, we cover the return postage.</p><p><a href=\"/pages/shipping\">Shipping detail</a> &middot; <a href=\"/pages/returns\">Returns policy</a></p>",
+                        "text": "<p>Dispatched within 1&ndash;2 business days. After that, roughly 7&ndash;18 business days across Europe and the UK, and 10&ndash;20 business days further afield.</p><p>Delivery cost is calculated at checkout before you pay. You have a 14-day legal right to cancel and a 30-day return window on top of it. If it arrives faulty, we cover the return postage.</p><p><a href=\"/pages/shipping\">Shipping detail</a> &middot; <a href=\"/pages/returns\">Returns policy</a></p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
