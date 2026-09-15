@@ -872,3 +872,47 @@ claims 3. That gap is not a copywriting problem — it is the single biggest
 conversion disadvantage on this page, and no wording fixes it. The lever is a
 faster supplier or stocked inventory. Deleting the line just moves the
 disappointment to the order-status page and turns it into refunds and chargebacks.
+
+---
+
+# Round 17 — homepage stats and steps rebuilt
+
+Both halves of that stretch were wasting the screen.
+
+## What was wrong
+
+**The number strip** was a 2x2 grid on a phone: "100 LEDs" and "2 WAVELENGTHS"
+on one row, "3 INTENSITY LEVELS" and "30 DAY RETURNS" below, with a hole of dead
+space in the middle and everything jammed left. It was built as a four-across
+desktop row and never re-thought for the width most people actually use.
+
+**The three steps** were three tall bordered cards holding one short line each.
+Stacked on a phone that is roughly a screen and a half of mostly empty box. Cards
+work when the content fills them; here the content was a sentence.
+
+## What replaced them
+
+**Facts are now chips** — small rounded pills in one centred wrapping row:
+`100 LEDs` · `660 + 850 nm, red & near-infrared` · `3 intensity levels` ·
+`30 day returns`. Roughly a fifth of the previous height, no dead space, and it
+looks deliberate at any width.
+
+"2 wavelengths" became **660 + 850 nm**. Anyone who researches this category
+knows those two numbers, and "2" told them nothing.
+
+**The steps are now a connected timeline** — numbered red discs joined by a thin
+gradient line, copy beside each. On desktop it turns on its side into three
+columns joined horizontally. Same three steps, a third of the height, and the
+connector does the work the card borders were failing to do.
+
+Copy tightened:
+
+- **Charge** — "Like a phone. The cable is in the box." (was "One charge, then
+  you're free of the socket", which leaned on the cordless claim that is still
+  unconfirmed against the `PlugIn` SKU)
+- **Wear** — now also carries "pick one of three intensity levels", so the step
+  earns its space instead of restating the shell material
+- **Carry on** — unchanged, it was the best line of the three
+
+Added a quiet "Timings and the full routine" link to `/pages/how-it-works` at the
+foot, so the section has somewhere to send an interested reader.
