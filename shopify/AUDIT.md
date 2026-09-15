@@ -916,3 +916,44 @@ Copy tightened:
 
 Added a quiet "Timings and the full routine" link to `/pages/how-it-works` at the
 foot, so the section has somewhere to send an interested reader.
+
+---
+
+# Round 18 — How it works page rebuilt around photos
+
+New theme template `templates/page.how-it-works.json`, and the page now points at it
+(`templateSuffix: how-it-works`).
+
+## Structure
+
+Five alternating image-and-text bands, then the remaining copy:
+
+1. **Hero** — photo left — "Wear it. Get on with your day." + the short version + Buy now
+2. **The science, briefly** — photo right — what red and near-infrared actually do
+3. **Step 01 Charge** — photo left
+4. **Step 02 Put it on, start low** — photo right
+5. **Step 03 Carry on** — photo left
+6. **Page content** — consistency, what to expect, safety, still deciding
+
+Each band's image is a real `image_picker`, so it is filled in the theme editor with
+an upload button rather than by editing HTML. Each slot also accepts a video file.
+
+## Copy moved, not duplicated
+
+The page body used to hold the intro, the light explanation and the five-step
+routine. Those are now in the template, so they were removed from the body to avoid
+printing everything twice. What stays in the body — and stays editable in the normal
+page editor — is consistency, expectations, safety and the FAQ link.
+
+**Consequence worth knowing:** until the draft theme is published, the live page
+falls back to the default page template and shows only the second half. The store
+has no traffic, so the cost is nil, but it is a reason to publish rather than leave
+the draft sitting.
+
+## Empty slots
+
+Unlike the product video slots, these show a grey Shopify placeholder image when
+empty — the theme's own image block does that and it cannot be conditionally hidden
+from a template. So all five need filling before the theme is published.
+
+Shot list with per-slot direction: `shopify/photo-shot-list.md`.

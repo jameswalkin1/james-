@@ -1,0 +1,401 @@
+{
+  "sections": {
+    "s_hero": {
+      "type": "media-with-content",
+      "settings": {
+        "media_position": "left",
+        "media_width": "medium",
+        "media_height": "auto",
+        "section_width": "page-width",
+        "extend_media": false,
+        "background_color": "",
+        "padding-block-start": 28,
+        "padding-block-end": 28
+      },
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image_position": "cover",
+            "video_loop": true,
+            "video_autoplay": false
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center"
+          },
+          "blocks": {
+            "caption": {
+              "type": "text",
+              "settings": {
+                "text": "<p>How it works</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Wear it. Get on with your day.</h2>",
+                "type_preset": "h4",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "body": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Charge it. Put it on. Pick a level. Carry on with whatever you were already doing. That is the whole routine, and the fact that it asks nothing of your evening is the point.</p>",
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "left",
+                "max_width": "narrow"
+              },
+              "blocks": {}
+            },
+            "cta": {
+              "type": "button",
+              "settings": {
+                "label": "Buy now",
+                "link": "shopify://products/led-red-light-therapy-hair-growth-cap-with-infrared-heat",
+                "style_class": "button-primary"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "caption",
+            "heading",
+            "body",
+            "cta"
+          ]
+        }
+      }
+    },
+    "s_light": {
+      "type": "media-with-content",
+      "settings": {
+        "media_position": "right",
+        "media_width": "medium",
+        "media_height": "auto",
+        "section_width": "page-width",
+        "extend_media": false,
+        "background_color": "",
+        "padding-block-start": 28,
+        "padding-block-end": 28
+      },
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image_position": "cover",
+            "video_loop": true,
+            "video_autoplay": false
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center"
+          },
+          "blocks": {
+            "caption": {
+              "type": "text",
+              "settings": {
+                "text": "<p>The science, briefly</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>What the light actually does</h2>",
+                "type_preset": "h4",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "body": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Low-level light therapy puts two wavelengths on the scalp: visible red at around 660&nbsp;nm, which acts at the surface, and near-infrared at around 850&nbsp;nm, a longer wavelength that reaches slightly deeper. Light at these wavelengths is absorbed by cells and supports normal cellular activity in the skin and follicles.</p><p>It is not a heat treatment and it is not a surgical laser. It does not hurt. Most people feel nothing beyond gentle warmth from the infrared setting.</p>",
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "left",
+                "max_width": "narrow"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "caption",
+            "heading",
+            "body"
+          ]
+        }
+      }
+    },
+    "s_step1": {
+      "type": "media-with-content",
+      "settings": {
+        "media_position": "left",
+        "media_width": "medium",
+        "media_height": "auto",
+        "section_width": "page-width",
+        "extend_media": false,
+        "background_color": "",
+        "padding-block-start": 28,
+        "padding-block-end": 28
+      },
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image_position": "cover",
+            "video_loop": true,
+            "video_autoplay": false
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center"
+          },
+          "blocks": {
+            "caption": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Step 01</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Charge it</h2>",
+                "type_preset": "h4",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "body": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Charge it fully before the first session, using the cable in the box. After that it tops up like any other rechargeable thing you own.</p>",
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "left",
+                "max_width": "narrow"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "caption",
+            "heading",
+            "body"
+          ]
+        }
+      }
+    },
+    "s_step2": {
+      "type": "media-with-content",
+      "settings": {
+        "media_position": "right",
+        "media_width": "medium",
+        "media_height": "auto",
+        "section_width": "page-width",
+        "extend_media": false,
+        "background_color": "",
+        "padding-block-start": 28,
+        "padding-block-end": 28
+      },
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image_position": "cover",
+            "video_loop": true,
+            "video_autoplay": false
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center"
+          },
+          "blocks": {
+            "caption": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Step 02</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Put it on, start low</h2>",
+                "type_preset": "h4",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "body": {
+              "type": "text",
+              "settings": {
+                "text": "<p>The shell is soft and flexible, so it goes on like an ordinary cap. There are three intensity levels &mdash; start on the lowest and work up as your scalp gets used to it, rather than starting at the top.</p>",
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "left",
+                "max_width": "narrow"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "caption",
+            "heading",
+            "body"
+          ]
+        }
+      }
+    },
+    "s_step3": {
+      "type": "media-with-content",
+      "settings": {
+        "media_position": "left",
+        "media_width": "medium",
+        "media_height": "auto",
+        "section_width": "page-width",
+        "extend_media": false,
+        "background_color": "",
+        "padding-block-start": 28,
+        "padding-block-end": 28
+      },
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image_position": "cover",
+            "video_loop": true,
+            "video_autoplay": false
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center"
+          },
+          "blocks": {
+            "caption": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Step 03</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Carry on</h2>",
+                "type_preset": "h4",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
+            "body": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Breakfast, email, the dog, the washing up. Sitting still and watching the clock is exactly how people end up abandoning a routine, so do not build yours that way.</p><p>Session timings are in the manual in the box.</p>",
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "left",
+                "max_width": "narrow"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "caption",
+            "heading",
+            "body"
+          ]
+        }
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "page-content"
+      ],
+      "settings": {
+        "gap": 32,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 24,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "s_hero",
+    "s_light",
+    "s_step1",
+    "s_step2",
+    "s_step3",
+    "main"
+  ]
+}
