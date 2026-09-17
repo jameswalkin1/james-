@@ -135,6 +135,116 @@ def cmd_run(args) -> int:
     return 0
 
 
+def cmd_doctor(args) -> int:
+    """Check every prerequisite and say exactly what is wrong, in plain language.
+
+    Exists so a broken setup produces one clear sentence rather than a Python
+    traceback. Each check either passes or prints the specific fix.
+    """
+    ok = "  OK   "
+    bad = " FAIL  "
+    warn = " WARN  "
+    problems: list[str] = []
+
+    print("Checking your setup\n" + "=" * 62)
+
+    # --- dependencies -----------------------------------------------------
+    try:
+        import pandas, numpy, requests, yaml, dotenv  # noqa: F401
+        print(f"{ok} Python packages installed")
+    except ImportError as exc:
+        print(f"{bad} missing package: {exc.name}")
+        print("         fix: pip install -r requirements.txt")
+        return 1
+
+    # --- config file ------------------------------------------------------
+    try:
+        cfg = load_config(args.config)
+        print(f"{ok} {args.config} is valid "
+              f"({len(cfg.instruments)} instruments, {cfg.granularity} bars, mode={cfg.mode})")
+    except Exception as exc:
+        print(f"{bad} could not read {args.config}: {exc}")
+        return 1
+
+    # --- risk coherence ---------------------------------------------------
+    eff = cfg.risk.effective_max_positions
+    if eff < cfg.risk.max_open_positions:
+        print(f"{warn} max_open_positions={cfg.risk.max_open_positions} but the risk "
+              f"budget only allows {eff}")
+        print(f"         fix: raise max_portfolio_risk, or lower max_open_positions to {eff}")
+    else:
+        print(f"{ok} risk caps are coherent ({eff} concurrent positions, "
+              f"{cfg.risk.risk_per_trade:.2%} each)")
+
+    # --- credentials ------------------------------------------------------
+    if not cfg.oanda_token or not cfg.oanda_account:
+        print(f"{bad} no OANDA credentials found")
+        print("         fix: cp .env.example .env   then fill in OANDA_API_TOKEN")
+        print("              and OANDA_ACCOUNT_ID from your OANDA account portal")
+        return 1
+    print(f"{ok} credentials present (environment: {cfg.oanda_env})")
+
+    if cfg.oanda_env == "live":
+        print(f"{warn} pointed at a LIVE account. Use a demo account until this is proven.")
+
+    # --- broker connection ------------------------------------------------
+    try:
+        broker = OandaBroker(cfg.oanda_token, cfg.oanda_account, cfg.oanda_env)
+        account = broker.get_account()
+        print(f"{ok} connected to OANDA: {account.account_id}, "
+              f"{account.equity:,.2f} {account.currency}")
+    except Exception as exc:
+        print(f"{bad} could not reach OANDA: {str(exc)[:150]}")
+        print("         fix: check the token is for the right environment "
+              "(demo tokens do not work on live, and vice versa)")
+        return 1
+
+    # --- account currency matches config ----------------------------------
+    if account.currency != cfg.account_currency:
+        print(f"{bad} your account is in {account.currency} but config.yaml says "
+              f"{cfg.account_currency}")
+        print(f"         fix: set account_currency: {account.currency} in {args.config}")
+        problems.append("currency mismatch")
+    else:
+        print(f"{ok} account currency matches config ({account.currency})")
+
+    # --- every instrument is actually tradeable ---------------------------
+    currency = account.currency
+    extra = required_conversion_pairs(cfg.instruments, currency)
+    unavailable: list[str] = []
+    for instrument in cfg.instruments + extra:
+        try:
+            broker.get_candles(instrument, cfg.granularity, count=1)
+        except Exception:
+            unavailable.append(instrument)
+
+    if unavailable:
+        print(f"{bad} your broker does not offer: {', '.join(unavailable)}")
+        print(f"         fix: remove them from instruments: in {args.config}")
+        problems.append("unavailable instruments")
+    else:
+        print(f"{ok} all {len(cfg.instruments)} instruments available"
+              + (f", plus {len(extra)} conversion series" if extra else ""))
+
+    # --- cached data ------------------------------------------------------
+    cached = list(CACHE.glob(f"*_{cfg.granularity}.csv"))
+    if not cached:
+        print(f"{warn} no cached candles yet")
+    else:
+        print(f"{ok} {len(cached)} cached candle files")
+
+    print("=" * 62)
+    if problems:
+        print(f"\n{len(problems)} problem(s) to fix: {', '.join(problems)}")
+        return 1
+
+    print("\nEverything checks out. Next:")
+    if not cached:
+        print("  python -m src.cli fetch       # download ~10 years of candles")
+    print("  python -m src.cli backtest    # see the real numbers")
+    return 0
+
+
 def cmd_status(args) -> int:
     cfg = load_config(args.config)
     broker = _broker(cfg)
@@ -175,6 +285,9 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("status", help="show account and positions")
     p.set_defaults(func=cmd_status)
+
+    p = sub.add_parser("doctor", help="check your setup and report what is wrong")
+    p.set_defaults(func=cmd_doctor)
 
     args = parser.parse_args(argv)
     _setup_logging(args.verbose)

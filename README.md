@@ -167,10 +167,15 @@ downloads them automatically — a USD account needs none with the default
 universe; a EUR account also pulls `EUR_CAD`, `EUR_CHF`, `EUR_NZD`.
 
 ```bash
-python -m src.cli status              # confirm the connection works
+python -m src.cli doctor              # checks everything, names any problem
 python -m src.cli fetch               # download ~10 years of daily candles
 python -m src.cli backtest            # see the numbers
 ```
+
+Run `doctor` first. It verifies packages, config coherence, credentials, the
+broker connection, that your account currency matches `config.yaml`, and that
+your broker actually offers every instrument in the universe — and prints the
+specific fix for whatever fails, instead of a traceback.
 
 ## Running it
 
