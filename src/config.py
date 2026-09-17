@@ -17,7 +17,10 @@ from .risk import RiskParams
 from .strategy import StrategyParams
 
 DEFAULT_UNIVERSE = [
+    # USD majors
     "EUR_USD", "GBP_USD", "USD_JPY", "AUD_USD", "USD_CAD", "USD_CHF", "NZD_USD",
+    # non-USD crosses, so the per-currency risk cap does not bind on USD alone
+    "EUR_GBP", "EUR_JPY", "GBP_JPY", "AUD_JPY", "AUD_NZD", "EUR_AUD", "CAD_JPY",
 ]
 
 

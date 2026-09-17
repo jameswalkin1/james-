@@ -10,9 +10,14 @@ high-volatility pair quietly dominates the whole portfolio's P&L.
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 
 import pandas as pd
+
+log = logging.getLogger(__name__)
+
+from .rates import split_pair  # single definition, shared with the rate book
 
 
 @dataclass(frozen=True)
@@ -41,14 +46,31 @@ class RiskParams:
         if self.max_per_currency < 1:
             raise ValueError("max_per_currency must be >= 1")
 
+        # The two caps are COUPLED. Every position consumes risk_per_trade of the
+        # portfolio budget, so the budget imposes its own position limit. Setting
+        # max_open_positions above that limit is dead configuration - it reads
+        # like a change but cannot alter a single trade, which is exactly the
+        # kind of silent no-op that wastes days of tuning.
+        if self.max_open_positions > self.effective_max_positions:
+            log.warning(
+                "max_open_positions=%d is unreachable: max_portfolio_risk=%.1f%% "
+                "at %.2f%% per trade allows only %d concurrent positions. "
+                "Raise max_portfolio_risk to make the position cap bite.",
+                self.max_open_positions,
+                self.max_portfolio_risk * 100,
+                self.risk_per_trade * 100,
+                self.effective_max_positions,
+            )
 
-def split_pair(instrument: str) -> tuple[str, str]:
-    """'EUR_USD' or 'EUR/USD' -> ('EUR', 'USD')."""
-    norm = instrument.replace("/", "_").upper()
-    parts = norm.split("_")
-    if len(parts) != 2 or not all(len(p) == 3 for p in parts):
-        raise ValueError(f"cannot parse instrument {instrument!r}, expected e.g. EUR_USD")
-    return parts[0], parts[1]
+    @property
+    def effective_max_positions(self) -> int:
+        """Positions actually reachable, given both caps.
+
+        The binding limit is whichever cap is tighter: the explicit position
+        count, or how many full-size trades the portfolio risk budget affords.
+        """
+        from_budget = int(self.max_portfolio_risk / self.risk_per_trade)
+        return max(1, min(self.max_open_positions, from_budget))
 
 
 def position_size(

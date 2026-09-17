@@ -26,6 +26,7 @@ from .broker.base import Broker, BrokerError
 from .config import Config
 from .costs import quote_to_account_rate
 from .notify import Notifier
+from .rates import BrokerRateBook, MissingRateError
 from .risk import PortfolioState, can_open, check_kill_switch, position_size
 from .strategy import (
     Position,
@@ -68,6 +69,9 @@ class TradingEngine:
         self.config = config
         self.notify = notifier or Notifier(config.telegram_token, config.telegram_chat)
         self.state = EngineState()
+        # Resolves conversion rates for crosses whose P&L lands in a third
+        # currency. Cached per cycle so one lookup serves several instruments.
+        self.rates = BrokerRateBook(broker)
 
     # ------------------------------------------------------------ reconcile
 
@@ -112,6 +116,7 @@ class TradingEngine:
 
     def run_cycle(self) -> None:
         """One full pass: reconcile, manage open trades, then consider entries."""
+        self.rates.clear()  # fresh prices for this cycle
         account = self.broker.get_account()
         equity = account.equity
 
@@ -136,9 +141,19 @@ class TradingEngine:
         # Rebuild per-instrument risk so the portfolio caps are meaningful.
         for inst, pos in positions.items():
             try:
-                rate = quote_to_account_rate(inst, pos.entry_price, self.config.account_currency)
-            except ValueError:
-                rate = 1.0
+                rate = quote_to_account_rate(
+                    inst, pos.entry_price, self.config.account_currency, rates=self.rates
+                )
+            except (ValueError, MissingRateError) as exc:
+                # Falling back to 1.0 here would UNDERSTATE the risk of a JPY
+                # cross by ~150x and quietly defeat the portfolio caps. Charge
+                # the position against the caps at its full stop distance
+                # instead, so an unpriceable position blocks rather than hides.
+                log.error("cannot price risk on %s: %s - treating as full risk", inst, exc)
+                self.notify.alert(f"cannot convert P&L for {inst}: {exc}")
+                portfolio.open_risk[inst] = self.config.risk.max_portfolio_risk
+                portfolio.open_sides[inst] = pos.side
+                continue
             portfolio.open_risk[inst] = abs(pos.entry_price - pos.stop_price) * pos.units * rate / equity
             portfolio.open_sides[inst] = pos.side
 
@@ -181,9 +196,12 @@ class TradingEngine:
         stop = initial_stop(entry_ref, side, float(bar["atr"]), params)
 
         try:
-            rate = quote_to_account_rate(instrument, entry_ref, self.config.account_currency)
-        except ValueError as exc:
-            log.warning("skipping %s: %s", instrument, exc)
+            rate = quote_to_account_rate(
+                instrument, entry_ref, self.config.account_currency, rates=self.rates
+            )
+        except (ValueError, MissingRateError) as exc:
+            log.warning("skipping %s: cannot convert P&L to account currency: %s",
+                        instrument, exc)
             return
 
         units = position_size(equity, entry_ref, stop, self.config.risk, rate)

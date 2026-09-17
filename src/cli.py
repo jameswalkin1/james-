@@ -19,6 +19,7 @@ from .broker.oanda import OandaBroker
 from .config import load_config
 from .engine import TradingEngine
 from .notify import Notifier
+from .rates import required_conversion_pairs
 
 CACHE = Path("data/cache")
 
@@ -37,30 +38,57 @@ def _broker(cfg):
 
 
 def cmd_fetch(args) -> int:
-    """Download candles and cache them so backtests do not re-hit the API."""
+    """Download candles and cache them so backtests do not re-hit the API.
+
+    Also downloads any series needed only to convert a cross pair's P&L into the
+    account currency. Those are cached but never traded.
+    """
     cfg = load_config(args.config)
     broker = _broker(cfg)
     CACHE.mkdir(parents=True, exist_ok=True)
 
-    for instrument in cfg.instruments:
-        df = broker.get_candles(instrument, cfg.granularity, count=args.count)
-        path = CACHE / f"{instrument}_{cfg.granularity}.csv"
-        df.to_csv(path)
-        print(f"{instrument:10s} {len(df):5d} bars  {df.index[0]:%Y-%m-%d} -> {df.index[-1]:%Y-%m-%d}")
+    extra = required_conversion_pairs(cfg.instruments, cfg.account_currency)
+    if extra:
+        print(f"{len(cfg.instruments)} traded + {len(extra)} conversion-only "
+              f"({', '.join(extra)}) for a {cfg.account_currency} account\n")
+
+    failed: list[str] = []
+    for instrument in cfg.instruments + extra:
+        tag = "" if instrument in cfg.instruments else "  [conversion only]"
+        try:
+            df = broker.get_candles(instrument, cfg.granularity, count=args.count)
+        except Exception as exc:
+            failed.append(instrument)
+            print(f"{instrument:10s} FAILED: {str(exc)[:70]}")
+            continue
+        df.to_csv(CACHE / f"{instrument}_{cfg.granularity}.csv")
+        print(f"{instrument:10s} {len(df):5d} bars  "
+              f"{df.index[0]:%Y-%m-%d} -> {df.index[-1]:%Y-%m-%d}{tag}")
+
+    if failed:
+        print(f"\n{len(failed)} instrument(s) could not be fetched: {', '.join(failed)}")
+        print("Remove them from config.yaml, or check your broker offers them.")
+        return 1
     return 0
+
+
+def _load_cached(instruments: list[str], granularity: str) -> dict[str, pd.DataFrame]:
+    out: dict[str, pd.DataFrame] = {}
+    for instrument in instruments:
+        path = CACHE / f"{instrument}_{granularity}.csv"
+        if not path.exists():
+            print(f"missing {path} - run 'fetch' first", file=sys.stderr)
+            continue
+        out[instrument] = pd.read_csv(path, index_col=0, parse_dates=True)
+    return out
 
 
 def cmd_backtest(args) -> int:
     cfg = load_config(args.config)
-    data: dict[str, pd.DataFrame] = {}
-
-    for instrument in cfg.instruments:
-        path = CACHE / f"{instrument}_{cfg.granularity}.csv"
-        if not path.exists():
-            print(f"missing {path} - run 'fetch' first", file=sys.stderr)
-            continue
-        df = pd.read_csv(path, index_col=0, parse_dates=True)
-        data[instrument] = df
+    data = _load_cached(cfg.instruments, cfg.granularity)
+    conversion = _load_cached(
+        required_conversion_pairs(cfg.instruments, cfg.account_currency), cfg.granularity
+    )
 
     if not data:
         print("no cached data found. Run: python -m src.cli fetch", file=sys.stderr)
@@ -71,7 +99,7 @@ def cmd_backtest(args) -> int:
         risk_params=cfg.risk,
         starting_equity=cfg.starting_equity,
         account_currency=cfg.account_currency,
-    ).run(data)
+    ).run(data, conversion_data=conversion)
 
     print(result.summary())
     print()

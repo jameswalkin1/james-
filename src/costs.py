@@ -88,7 +88,11 @@ def cost_for(instrument: str) -> CostModel:
 
 
 def quote_to_account_rate(
-    instrument: str, price: float, account_currency: str = "USD"
+    instrument: str,
+    price: float,
+    account_currency: str = "USD",
+    rates=None,
+    when=None,
 ) -> float:
     """Convert a P&L amount in the pair's QUOTE currency into account currency.
 
@@ -96,9 +100,13 @@ def quote_to_account_rate(
     USD_JPY on a USD account: profit is in JPY, convert back  -> 1/price
 
     A cross with neither leg in the account currency (EUR_GBP on a USD account)
-    needs a third exchange rate this function does not have. Rather than silently
-    returning a wrong number, it raises - the default universe is all
-    USD-crossed for exactly this reason.
+    needs a third rate. Pass `rates` - a RateBook for backtests or a
+    BrokerRateBook for live - and it resolves GBP->USD from the GBP_USD series.
+    Without one, this raises rather than guessing: a silently wrong conversion
+    rate misprices every position in that pair.
+
+    `when` pins a historical lookup to a timestamp so a backtest converts at
+    rates that were knowable at the time.
     """
     base, quote = instrument.upper().replace("/", "_").split("_")
     account_currency = account_currency.upper()
@@ -110,8 +118,11 @@ def quote_to_account_rate(
             raise ValueError(f"cannot convert at non-positive price {price}")
         return 1.0 / price
 
-    raise ValueError(
-        f"{instrument} has neither leg in account currency {account_currency}; "
-        "a third conversion rate is required. Restrict the universe to "
-        f"{account_currency}-crossed pairs or supply a rate feed."
-    )
+    if rates is None:
+        raise ValueError(
+            f"{instrument} has neither leg in account currency {account_currency} "
+            "and no rate provider was supplied. Pass a RateBook (backtest) or "
+            "BrokerRateBook (live), or restrict the universe to "
+            f"{account_currency}-crossed pairs."
+        )
+    return rates.rate(quote, account_currency, when)

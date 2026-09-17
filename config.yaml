@@ -5,10 +5,19 @@
 #   auto   = place and manage orders automatically
 mode: signal
 
-# Universe. All USD-crossed so P&L converts exactly on a USD account.
-# Adding a cross like EUR_GBP requires a third conversion rate the bot does
-# not fetch, and it will refuse to size such a trade rather than guess.
+# Universe. 14 liquid pairs spread across 8 currencies.
+#
+# The spread across currencies is the point. An all-USD-crossed universe makes
+# max_per_currency bind on USD constantly, which throttled this strategy to ~29
+# trades/year while discarding ~170 valid signals. Diversifying the currencies
+# lets the cap do its real job - stopping correlated bets - instead of acting as
+# a blanket position limit.
+#
+# Crosses whose P&L lands in a third currency (EUR_GBP earns GBP on a USD
+# account) are converted via src/rates.py. Run `fetch` and it downloads any
+# extra conversion series automatically.
 instruments:
+  # USD majors
   - EUR_USD
   - GBP_USD
   - USD_JPY
@@ -16,6 +25,14 @@ instruments:
   - USD_CAD
   - USD_CHF
   - NZD_USD
+  # non-USD crosses - these are what unblock the currency cap
+  - EUR_GBP
+  - EUR_JPY
+  - GBP_JPY
+  - AUD_JPY
+  - AUD_NZD
+  - EUR_AUD
+  - CAD_JPY
 
 granularity: D          # D = daily bars. H4 also works; expect more trades and more cost drag.
 account_currency: USD
@@ -31,7 +48,11 @@ strategy:
 
 risk:
   risk_per_trade: 0.005    # 0.5% of equity per trade
-  max_open_positions: 4
-  max_portfolio_risk: 0.02 # 2% total open risk
+  # NOTE: these two are coupled. Every position costs risk_per_trade of the
+  # portfolio budget, so max_portfolio_risk / risk_per_trade is its own position
+  # limit. 6 x 0.5% = 3.0%, so both caps bite at the same point - raise them
+  # together or the change does nothing. The bot warns if you get this wrong.
+  max_open_positions: 6
+  max_portfolio_risk: 0.03 # 3% total open risk
   max_per_currency: 2      # stops stacking one currency bet across pairs
   daily_loss_limit: 0.03   # -3% on the day -> flatten and stand down

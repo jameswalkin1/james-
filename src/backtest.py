@@ -24,6 +24,7 @@ import numpy as np
 import pandas as pd
 
 from .costs import CostModel, cost_for, quote_to_account_rate
+from .rates import MissingRateError, RateBook
 from .risk import PortfolioState, RiskParams, can_open, position_size
 from .strategy import (
     Position,
@@ -223,21 +224,41 @@ class Backtester:
     def _costs(self, instrument: str) -> CostModel:
         return self._cost_override.get(instrument, cost_for(instrument))
 
-    def _pnl(self, pos: Position, instrument: str, exit_price: float) -> float:
-        """Realised P&L in account currency."""
+    def _pnl(
+        self,
+        pos: Position,
+        instrument: str,
+        exit_price: float,
+        when: pd.Timestamp | None = None,
+        rates: RateBook | None = None,
+    ) -> float:
+        """Realised P&L in account currency, converted at the time of the exit."""
         direction = 1 if pos.is_long else -1
         move = (exit_price - pos.entry_price) * direction
-        rate = quote_to_account_rate(instrument, exit_price, self.account_currency)
+        rate = quote_to_account_rate(
+            instrument, exit_price, self.account_currency, rates=rates, when=when
+        )
         return move * pos.units * rate
 
-    def run(self, data: dict[str, pd.DataFrame]) -> BacktestResult:
+    def run(
+        self,
+        data: dict[str, pd.DataFrame],
+        conversion_data: dict[str, pd.DataFrame] | None = None,
+    ) -> BacktestResult:
         """Execute the backtest.
 
         Args:
             data: instrument -> OHLC DataFrame, indexed by bar-close timestamp.
+                These are the instruments that will be TRADED.
+            conversion_data: extra series used only to convert P&L into the
+                account currency (see rates.required_conversion_pairs). They are
+                never traded. Omit it when every pair touches the account
+                currency.
         """
         if not data:
             raise ValueError("no data supplied to backtest")
+
+        rates = RateBook.from_candles({**(conversion_data or {}), **data})
 
         features = {
             inst: compute_features(df, self.params) for inst, df in data.items()
@@ -276,9 +297,13 @@ class Backtester:
                 stop = initial_stop(fill, order.side, order.signal_atr, self.params)
 
                 try:
-                    rate = quote_to_account_rate(order.instrument, fill, self.account_currency)
-                except ValueError as exc:
+                    rate = quote_to_account_rate(
+                        order.instrument, fill, self.account_currency,
+                        rates=rates, when=ts,
+                    )
+                except (ValueError, MissingRateError) as exc:
                     log.warning("skipping %s: %s", order.instrument, exc)
+                    rejected["no_conversion_rate"] = rejected.get("no_conversion_rate", 0) + 1
                     continue
 
                 units = position_size(equity, fill, stop, self.risk, rate)
@@ -330,7 +355,7 @@ class Backtester:
                 # stop_fill, not exit_fill: stops trigger into adverse movement.
                 fill = self._costs(inst).stop_fill(inst, raw_fill, pos.side)
 
-                pnl = self._pnl(pos, inst, fill)
+                pnl = self._pnl(pos, inst, fill, ts, rates)
                 equity += pnl
                 trades.append(
                     Trade(
@@ -360,7 +385,7 @@ class Backtester:
 
                 if exit_signal(pos, bar):
                     fill = self._costs(inst).exit_fill(inst, bar["close"], pos.side)
-                    pnl = self._pnl(pos, inst, fill)
+                    pnl = self._pnl(pos, inst, fill, ts, rates)
                     equity += pnl
                     trades.append(
                         Trade(
@@ -393,7 +418,7 @@ class Backtester:
                         continue
                     pos = positions[inst]
                     fill = self._costs(inst).exit_fill(inst, bar["close"], pos.side)
-                    pnl = self._pnl(pos, inst, fill)
+                    pnl = self._pnl(pos, inst, fill, ts, rates)
                     equity += pnl
                     trades.append(
                         Trade(
@@ -431,7 +456,7 @@ class Backtester:
             for inst, pos in positions.items():
                 bar = bars.get(inst)
                 if bar is not None and not pd.isna(bar["close"]):
-                    unrealised += self._pnl(pos, inst, bar["close"])
+                    unrealised += self._pnl(pos, inst, bar["close"], ts, rates)
             curve.append((ts, equity + unrealised))
 
             state.equity = equity

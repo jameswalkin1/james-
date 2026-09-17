@@ -29,8 +29,36 @@ curve-fitted backtest.
 | **Trailing stop** | Chandelier: highest high since entry − 3 × ATR, ratcheting only |
 | **Channel exit** | Opposite 10-bar channel breaks |
 | **Size** | 0.5% of equity risked between entry and stop |
+| **Universe** | 14 pairs across 8 currencies — see below |
 
 Signals are computed on **closed bars only** and acted on at the next bar's open.
+
+### Why 14 pairs across 8 currencies
+
+The first version traded 7 all-USD-crossed pairs, chosen so P&L converted
+exactly. That had a cost I did not anticipate: with USD on every pair, the
+`max_per_currency` cap bound on USD permanently and throttled the system to
+**~32 trades/year while discarding ~1,300 valid signals**. The cap meant to stop
+correlated bets was acting as a blanket position limit.
+
+Spreading across 8 currencies roughly **doubled trade frequency** at identical
+edge per trade, on matched synthetic data with realistic cross-pair correlation:
+
+| | Narrow (7 pairs, all USD) | Wide (14 pairs, 8 ccy) |
+|---|---|---|
+| Trades/year | 31.8 | **62.0** |
+| CAGR | +4.67% | +8.23% |
+| Max drawdown | 7.04% | 12.05% |
+| Sharpe | 0.90 | **1.06** |
+| Blocked by USD cap | **1,299** | 399 |
+
+More trades came with more drawdown — that is the honest trade-off, and it is
+what taking more positions buys you. Risk-adjusted return improved. The
+bottleneck also moved from an accidental cap to the deliberate one (position
+count), which is where it belongs.
+
+Trade count scales with **edge per trade**, not with risk per trade. Widening the
+currency spread is the one lever that adds trades without touching either.
 
 ### What to expect
 
@@ -48,8 +76,12 @@ Every one of these is a brake:
 
 - **0.5% risk per trade**, sized from the stop distance, so volatile pairs get
   smaller positions rather than bigger risk
-- **4 concurrent positions** maximum
-- **2% total open risk** across the portfolio
+- **6 concurrent positions** maximum
+- **3% total open risk** across the portfolio — note these two are **coupled**:
+  every position spends `risk_per_trade` of the budget, so
+  `max_portfolio_risk / risk_per_trade` is its own position limit. Raising the
+  position cap alone is a silent no-op; the bot warns when the config is
+  incoherent (`effective_max_positions`)
 - **2 positions per currency** — long EUR/USD + long GBP/USD + long AUD/USD is
   one big short-USD bet, not three independent ones
 - **−3% daily loss limit** → flatten everything, stop trading until tomorrow
@@ -93,11 +125,21 @@ Overnight financing (swap) is supported but **defaults to zero** — set it if y
 hold positions for days, which this system does. Real spreads widen around news
 and at the daily roll.
 
-### 4. Cross pairs are refused, not guessed
+### 4. Cross-pair conversion is resolved, never guessed
 
 A pair with neither leg in your account currency (EUR_GBP on a USD account)
-needs a third exchange rate this bot does not fetch. It raises rather than
-silently returning a wrong position size. Keep the universe USD-crossed.
+earns P&L in a third currency. `src/rates.py` resolves the rate from ordinary
+candle series — directly (GBP→USD from `GBP_USD`) or inverted (JPY→USD from
+`USD_JPY`).
+
+**Triangulation through a third currency is deliberately not implemented.**
+Chained rates compound their errors and produce plausible-looking nonsense. When
+a rate cannot be resolved the code raises and names the exact series to fetch.
+
+This matters more than it sounds: returning `1.0` for a JPY cross would size the
+position **~157x too large**, and every downstream risk cap would wave it
+through, because they all work in account currency. There is a test for
+precisely that.
 
 ### 5. Parameters are conventional, not optimised
 
@@ -118,6 +160,11 @@ cp .env.example .env     # then fill it in
 Get an OANDA **demo** account (free, instant, no deposit — full API access
 identical to live). In the account portal: *Manage API Access* → generate a
 token. Put the token and account ID in `.env`. Never commit `.env`.
+
+**Account currency:** set `account_currency` in `config.yaml` to match your
+broker account. `fetch` works out which extra conversion series it needs and
+downloads them automatically — a USD account needs none with the default
+universe; a EUR account also pulls `EUR_CAD`, `EUR_CHF`, `EUR_NZD`.
 
 ```bash
 python -m src.cli status              # confirm the connection works
@@ -174,6 +221,7 @@ src/
   indicators.py    ATR, EMA, Donchian        (pure)
   risk.py          sizing, limits, kill switch
   costs.py         spread, slippage, conversion
+  rates.py         cross-currency conversion (RateBook, BrokerRateBook)
   backtest.py      event-driven portfolio backtester
   engine.py        live trading loop
   config.py        config.yaml + .env
@@ -183,7 +231,7 @@ src/
     base.py        broker interface  <-- port to MT5/Vantage here
     oanda.py       OANDA v20
     paper.py       simulated, for tests and dry runs
-tests/             41 tests
+tests/             70 tests
 ```
 
 Strategy and risk logic never import a broker SDK. Both the backtester and the

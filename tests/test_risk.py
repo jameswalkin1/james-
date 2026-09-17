@@ -101,3 +101,35 @@ def test_split_pair(raw, expected):
 def test_split_pair_rejects_junk():
     with pytest.raises(ValueError):
         split_pair("NOTAPAIR")
+
+
+# ------------------------------------------- coupled caps (position vs budget)
+
+def test_effective_positions_limited_by_the_risk_budget():
+    """2% budget at 0.5% per trade affords 4 positions, whatever the count says."""
+    rp = RiskParams(risk_per_trade=0.005, max_open_positions=10, max_portfolio_risk=0.02)
+    assert rp.effective_max_positions == 4
+
+
+def test_effective_positions_limited_by_the_explicit_cap():
+    rp = RiskParams(risk_per_trade=0.005, max_open_positions=3, max_portfolio_risk=0.05)
+    assert rp.effective_max_positions == 3
+
+
+def test_coherent_caps_agree():
+    rp = RiskParams(risk_per_trade=0.005, max_open_positions=6, max_portfolio_risk=0.03)
+    assert rp.effective_max_positions == 6
+
+
+def test_incoherent_caps_warn(caplog):
+    """A dead position cap must be announced, not silently ignored."""
+    with caplog.at_level("WARNING"):
+        RiskParams(risk_per_trade=0.005, max_open_positions=8, max_portfolio_risk=0.02)
+    assert "unreachable" in caplog.text
+
+
+def test_raising_only_the_position_cap_changes_nothing():
+    """The regression this guards: bumping max_open_positions alone is a no-op."""
+    a = RiskParams(risk_per_trade=0.005, max_open_positions=4, max_portfolio_risk=0.02)
+    b = RiskParams(risk_per_trade=0.005, max_open_positions=9, max_portfolio_risk=0.02)
+    assert a.effective_max_positions == b.effective_max_positions
