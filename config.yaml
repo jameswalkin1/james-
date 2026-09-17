@@ -1,0 +1,37 @@
+# Bot configuration. Safe to commit - secrets live in .env, which is gitignored.
+
+# Execution mode:
+#   signal = analyse and notify only, never places an order  <-- start here
+#   auto   = place and manage orders automatically
+mode: signal
+
+# Universe. All USD-crossed so P&L converts exactly on a USD account.
+# Adding a cross like EUR_GBP requires a third conversion rate the bot does
+# not fetch, and it will refuse to size such a trade rather than guess.
+instruments:
+  - EUR_USD
+  - GBP_USD
+  - USD_JPY
+  - AUD_USD
+  - USD_CAD
+  - USD_CHF
+  - NZD_USD
+
+granularity: D          # D = daily bars. H4 also works; expect more trades and more cost drag.
+account_currency: USD
+starting_equity: 10000  # used by the backtester only; live equity comes from the broker
+
+strategy:
+  entry_period: 20      # breakout lookback
+  exit_period: 10       # opposite channel that closes a trade
+  trend_ema: 100        # regime filter
+  atr_period: 20
+  stop_atr_mult: 2.0    # initial stop, in ATRs
+  trail_atr_mult: 3.0   # trailing stop distance, in ATRs
+
+risk:
+  risk_per_trade: 0.005    # 0.5% of equity per trade
+  max_open_positions: 4
+  max_portfolio_risk: 0.02 # 2% total open risk
+  max_per_currency: 2      # stops stacking one currency bet across pairs
+  daily_loss_limit: 0.03   # -3% on the day -> flatten and stand down
