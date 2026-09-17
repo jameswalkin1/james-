@@ -19,6 +19,14 @@
 > 9. Can you do **custom packaging** (our logo on the box and the manual)? What is
 >    the minimum for that, and what does it add per unit?
 > 10. HS code and declared value you use for EU shipments.
+> 11. Do you hold **stock in a European warehouse** (Poland, Germany, Netherlands)?
+>     If so, can you ship single units from there to EU customers, and what is the
+>     delivery time?
+> 12. Do you offer **one-piece dropshipping** with blind shipping — no supplier
+>     branding, invoices or promotional inserts in the parcel? What is the unit
+>     price at quantity 1?
+> 13. Are you **IOSS registered** for EU shipments? (If not, my customers get
+>     charged VAT plus a handling fee at the door, which I cannot accept.)
 
 Ask all of it in one message. How completely and how quickly they answer tells you
 more about whether they are worth dealing with than the price does.
@@ -76,3 +84,28 @@ for demand that has not been demonstrated.
 Delivery speed is the one that matters most. It has been the biggest single
 disadvantage against the competitor since the first review, and stock is the only
 thing that fixes it.
+
+## On using Alibaba for dropshipping instead of bulk
+
+Possible, but normally a bad trade:
+
+- **You lose the volume price.** The cheap unit cost is a bulk price. At quantity 1
+  expect a quote worse than the dropship platforms already charge.
+- **Delivery is no faster.** Same parcel, same route, 10–25 days. Only stock held
+  locally fixes delivery speed.
+- **No automation.** Every order is a manual message to the supplier with the
+  customer's address, and a separate payment.
+- **VAT at the door.** A parcel entering the EU from China needs the seller to be
+  IOSS registered, or the courier bills the customer the VAT plus €10–15 handling
+  before releasing it. Legally disclosed in the shipping policy, but commercially
+  it is a one-star review every time.
+- **Returns have nowhere to go.**
+
+For automated single-unit fulfilment from China, AliExpress is the tool built for
+it — but that is the same business as the current dropship setup, not an
+improvement on it.
+
+**The exception is question 11.** A supplier with EU warehouse stock can dropship
+single units inside the EU: 2–4 day delivery, no customs, no VAT surprise, no cash
+tied up. That combination is worth more than a better unit price, and it costs
+nothing to ask.
