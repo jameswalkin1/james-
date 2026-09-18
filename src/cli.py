@@ -33,7 +33,17 @@ def _setup_logging(verbose: bool) -> None:
 
 
 def _broker(cfg):
+    """Build the broker named in config.yaml."""
     cfg.validate_for_trading()
+    if cfg.broker == "mt5":
+        from .broker.mt5 import MT5Broker
+
+        return MT5Broker(
+            login=int(cfg.mt5_login) if cfg.mt5_login else None,
+            password=cfg.mt5_password,
+            server=cfg.mt5_server,
+            terminal_path=cfg.mt5_path or None,
+        )
     return OandaBroker(cfg.oanda_token, cfg.oanda_account, cfg.oanda_env)
 
 
@@ -177,26 +187,34 @@ def cmd_doctor(args) -> int:
               f"{cfg.risk.risk_per_trade:.2%} each)")
 
     # --- credentials ------------------------------------------------------
-    if not cfg.oanda_token or not cfg.oanda_account:
-        print(f"{bad} no OANDA credentials found")
-        print("         fix: cp .env.example .env   then fill in OANDA_API_TOKEN")
-        print("              and OANDA_ACCOUNT_ID from your OANDA account portal")
-        return 1
-    print(f"{ok} credentials present (environment: {cfg.oanda_env})")
-
-    if cfg.oanda_env == "live":
-        print(f"{warn} pointed at a LIVE account. Use a demo account until this is proven.")
+    print(f"{ok} broker: {cfg.broker}")
+    if cfg.broker == "oanda":
+        if not cfg.oanda_token or not cfg.oanda_account:
+            print(f"{bad} no OANDA credentials found")
+            print("         fix: cp .env.example .env   then fill in OANDA_API_TOKEN")
+            print("              and OANDA_ACCOUNT_ID from your account portal.")
+            print("         NOTE: this needs an OANDA fxTrade (v20) account, id like")
+            print("               101-004-12345678-001. An OANDA MT5 account (a short")
+            print("               number like 221230) will NOT work - set broker: mt5")
+            return 1
+        print(f"{ok} credentials present (environment: {cfg.oanda_env})")
+        if cfg.oanda_env == "live":
+            print(f"{warn} pointed at a LIVE account. Prove it on demo first.")
 
     # --- broker connection ------------------------------------------------
     try:
-        broker = OandaBroker(cfg.oanda_token, cfg.oanda_account, cfg.oanda_env)
+        broker = _broker(cfg)
         account = broker.get_account()
-        print(f"{ok} connected to OANDA: {account.account_id}, "
+        print(f"{ok} connected: account {account.account_id}, "
               f"{account.equity:,.2f} {account.currency}")
     except Exception as exc:
-        print(f"{bad} could not reach OANDA: {str(exc)[:150]}")
-        print("         fix: check the token is for the right environment "
-              "(demo tokens do not work on live, and vice versa)")
+        print(f"{bad} could not reach the broker: {str(exc)[:200]}")
+        if cfg.broker == "oanda":
+            print("         fix: check the token matches the environment "
+                  "(demo tokens do not work on live, and vice versa)")
+        else:
+            print("         fix: is the MT5 terminal running and logged in, and is")
+            print("              'Algo Trading' enabled in the toolbar?")
         return 1
 
     # --- account currency matches config ----------------------------------
@@ -225,6 +243,42 @@ def cmd_doctor(args) -> int:
     else:
         print(f"{ok} all {len(cfg.instruments)} instruments available"
               + (f", plus {len(extra)} conversion series" if extra else ""))
+
+    # --- can this account actually place the bot's smallest trade? --------
+    # MT5 brokers enforce a minimum lot. An account too small to reach it will
+    # size every trade to zero and silently never trade at all.
+    if cfg.broker == "mt5":
+        try:
+            probe = cfg.instruments[0]
+            candles = broker.get_candles(probe, cfg.granularity, count=cfg.strategy.warmup_bars + 5)
+            from .indicators import atr as _atr
+
+            atr_now = float(_atr(candles["high"], candles["low"], candles["close"],
+                                 cfg.strategy.atr_period).iloc[-1])
+            stop_distance = cfg.strategy.stop_atr_mult * atr_now
+            wanted_units = (account.equity * cfg.risk.risk_per_trade) / stop_distance
+            lots = broker.units_to_lots(probe, wanted_units)
+
+            if lots <= 0:
+                info = broker._mt5.symbol_info(broker._symbol(probe))
+                min_lot = float(getattr(info, "volume_min", 0.01))
+                min_risk = min_lot * 100_000 * stop_distance
+                needed = min_risk / cfg.risk.risk_per_trade
+                print(f"{bad} this account is too small to trade at "
+                      f"{cfg.risk.risk_per_trade:.2%} risk")
+                print(f"         your broker's minimum is {min_lot} lots, which risks "
+                      f"{min_risk:,.2f} {account.currency} on a {stop_distance/0.0001:.0f}-pip stop")
+                print(f"         that is {min_risk/account.equity:.1%} of your "
+                      f"{account.equity:,.2f} {account.currency} - far above the "
+                      f"{cfg.risk.risk_per_trade:.2%} target")
+                print(f"         fix: fund to ~{needed:,.0f} {account.currency}, or open a")
+                print("              MICRO/CENT account (0.001 or 0.0001 minimum lot)")
+                problems.append("account too small for the minimum lot")
+            else:
+                print(f"{ok} account can size a trade ({lots} lots at "
+                      f"{cfg.risk.risk_per_trade:.2%} risk)")
+        except Exception as exc:
+            print(f"{warn} could not check minimum trade size: {str(exc)[:100]}")
 
     # --- cached data ------------------------------------------------------
     cached = list(CACHE.glob(f"*_{cfg.granularity}.csv"))

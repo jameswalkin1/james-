@@ -38,6 +38,10 @@ class Config:
     # Execution mode. "signal" only notifies; "auto" actually places orders.
     mode: str = "signal"
 
+    # Which venue to trade through. "oanda" uses the v20 REST API; "mt5" drives
+    # a running MetaTrader 5 terminal (Vantage, OANDA EU, IC Markets, ...).
+    broker: str = "oanda"
+
     # Credentials, from environment only.
     oanda_token: str = ""
     oanda_account: str = ""
@@ -45,9 +49,18 @@ class Config:
     telegram_token: str = ""
     telegram_chat: str = ""
 
+    # MetaTrader 5. Leave the login blank to attach to a terminal that is
+    # already logged in, which is the usual setup on a dedicated VPS.
+    mt5_login: str = ""
+    mt5_password: str = ""
+    mt5_server: str = ""
+    mt5_path: str = ""
+
     def __post_init__(self) -> None:
         if self.mode not in ("signal", "auto"):
             raise ValueError(f"mode must be 'signal' or 'auto', got {self.mode!r}")
+        if self.broker not in ("oanda", "mt5"):
+            raise ValueError(f"broker must be 'oanda' or 'mt5', got {self.broker!r}")
 
     @property
     def is_live_money(self) -> bool:
@@ -55,6 +68,11 @@ class Config:
 
     def validate_for_trading(self) -> None:
         """Fail fast before the first cycle rather than mid-session."""
+        if not self.instruments:
+            raise ValueError("no instruments configured")
+        if self.broker == "mt5":
+            return  # MT5 credentials are optional; it can attach to a live terminal
+
         missing = []
         if not self.oanda_token:
             missing.append("OANDA_API_TOKEN")
@@ -65,8 +83,6 @@ class Config:
                 f"missing required environment variables: {', '.join(missing)}. "
                 "Copy .env.example to .env and fill it in."
             )
-        if not self.instruments:
-            raise ValueError("no instruments configured")
 
 
 def load_config(path: str | Path = "config.yaml") -> Config:
@@ -89,9 +105,14 @@ def load_config(path: str | Path = "config.yaml") -> Config:
         strategy=strategy,
         risk=risk,
         mode=raw.get("mode", "signal"),
+        broker=raw.get("broker", "oanda"),
         oanda_token=os.getenv("OANDA_API_TOKEN", ""),
         oanda_account=os.getenv("OANDA_ACCOUNT_ID", ""),
         oanda_env=os.getenv("OANDA_ENVIRONMENT", "practice"),
         telegram_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
         telegram_chat=os.getenv("TELEGRAM_CHAT_ID", ""),
+        mt5_login=os.getenv("MT5_LOGIN", ""),
+        mt5_password=os.getenv("MT5_PASSWORD", ""),
+        mt5_server=os.getenv("MT5_SERVER", ""),
+        mt5_path=os.getenv("MT5_TERMINAL_PATH", ""),
     )

@@ -233,22 +233,52 @@ src/
   notify.py        Telegram alerts
   cli.py           command line
   broker/
-    base.py        broker interface  <-- port to MT5/Vantage here
-    oanda.py       OANDA v20
+    base.py        broker interface
+    oanda.py       OANDA v20 REST
+    mt5.py         MetaTrader 5 (Vantage, OANDA MT5, ...)
     paper.py       simulated, for tests and dry runs
-tests/             70 tests
+tests/             100 tests
 ```
 
 Strategy and risk logic never import a broker SDK. Both the backtester and the
 live engine drive the same strategy functions through the same interface, so the
 system you test is the system you trade.
 
-### Moving to a different broker
+### Brokers
 
-Implement `src/broker/base.py` for the new venue and change one line of wiring.
-For Vantage that means an MT5 adapter — the `MetaTrader5` Python package is
-Windows-only, so it needs a Windows VPS with the terminal permanently logged in.
-Nothing in the strategy, risk or backtest code changes.
+Set `broker:` in `config.yaml`:
+
+| | `oanda` | `mt5` |
+|---|---|---|
+| Needs | fxTrade (v20) account, id like `101-004-12345678-001` | MT5 terminal running and logged in |
+| Runs on | anything, incl. a €5 Linux VPS | **Windows only** |
+| Works with | OANDA fxTrade | Vantage, OANDA MT5, IC Markets, most EU brokers |
+
+**An OANDA MetaTrader 5 account is not an fxTrade account.** They are separate
+platforms with separate account numbers (`221230` vs `101-004-…`). An MT5 account
+has no v20 API token — use `broker: mt5`. Some OANDA entities (notably the EU
+ones on `hub.oanda.com`) offer MT5 only.
+
+The MT5 adapter auto-detects the broker's symbol suffix (`.a`, `-ECN`, `m`), and
+tags its orders with a magic number so it never touches positions you opened by
+hand.
+
+### Minimum account size
+
+MT5 brokers enforce a **minimum lot**, and it sets a floor on what you can risk:
+
+| Account type | Min lot | Risk on a 130-pip stop | Account needed at 0.5% risk |
+|---|---|---|---|
+| Standard | 0.01 | €13.00 | **€2,600** |
+| Micro | 0.001 | €1.30 | **€260** |
+| Cent / nano | 0.0001 | €0.13 | **€26** |
+
+Below that floor the bot sizes to zero and places nothing — which is correct.
+Rounding *up* to the minimum instead would risk many times the configured amount,
+and on a small account that is the difference between 0.5% and 13% per trade.
+
+`doctor` checks this against your actual account and tells you the number to
+fund, or to open a micro/cent account instead.
 
 ## Tests
 

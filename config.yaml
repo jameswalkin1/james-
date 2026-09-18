@@ -5,6 +5,13 @@
 #   auto   = place and manage orders automatically
 mode: signal
 
+# Which venue to trade through:
+#   oanda = v20 REST API. Needs an OANDA fxTrade account (id like 101-004-...).
+#           Runs anywhere, including a cheap Linux VPS.
+#   mt5   = MetaTrader 5 terminal. Works with Vantage, OANDA's MT5 accounts and
+#           most EU brokers. Requires Windows with the terminal running.
+broker: oanda
+
 # Universe. 14 liquid pairs spread across 8 currencies.
 #
 # The spread across currencies is the point. An all-USD-crossed universe makes
